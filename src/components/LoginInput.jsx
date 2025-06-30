@@ -45,7 +45,7 @@ const LoginInput = ({ login }) => {
           value={password}
         />
 
-        <button className='btn btn-neutral mt-4'>Login</button>
+        <button className='btn btn-primary mt-4'>Login</button>
       </fieldset>
     </form>
   );
