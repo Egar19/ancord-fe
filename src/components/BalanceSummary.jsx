@@ -1,10 +1,10 @@
 const BalanceSUmmary = ({balance, totalIncome, totalOutcome}) => {
   return (
     <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-2 p-4 bg-accent rounded'>
-      <h3 className='text-xl'>Balance: 30000 {balance}</h3>
+      <h3 className='text-xl'>Balance: {balance}</h3>
       <div>
-        <h2>Income: 15000 {totalIncome}</h2>
-        <h2>Outcome: 20000 {totalOutcome}</h2>
+        <h2>Total Income: {totalIncome}</h2>
+        <h2>Total Outcome: {totalOutcome}</h2>
       </div>
     </div>
   );
