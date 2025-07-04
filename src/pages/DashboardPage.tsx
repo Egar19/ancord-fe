@@ -1,7 +1,10 @@
+import TabDashboard from "../components/TabDashboard"
 
 const DashboardPage = () => {
   return (
-    <h2>Dashboard</h2>
+    <div className="">
+      <TabDashboard />
+    </div>
   )
 }
 
