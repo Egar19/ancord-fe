@@ -1,5 +1,5 @@
 import BalanceSUmmary from "./BalanceSummary";
-import HistoryDashboard from "./HistoryDashboard";
+import HistoryList from "./HistoryList";
 
 const TabDashboard = () => {
   return (
@@ -14,7 +14,7 @@ const TabDashboard = () => {
         />
         <div className='tab-content bg-base-100 p-4'>
           <BalanceSUmmary />
-          <HistoryDashboard />
+          <HistoryList />
         </div>
 
         <input
