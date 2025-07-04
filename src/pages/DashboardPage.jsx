@@ -1,9 +1,11 @@
-import TabDashboard from "../components/TabDashboard"
+import BalanceSUmmary from "../components/BalanceSummary"
+import HistoryList from "../components/HistoryList"
 
-const DashboardPage = () => {
+const DashboardPage = ({records, totalIncome, totalOutcome, balance}) => {
   return (
-    <div className="">
-      <TabDashboard />
+    <div className="my-4">
+      <BalanceSUmmary balance={balance} totalIncome={totalIncome} totalOutcome={totalOutcome}/>
+      <HistoryList records={records}/>
     </div>
   )
 }
