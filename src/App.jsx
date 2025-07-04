@@ -3,8 +3,11 @@ import LoginPage from './pages/LoginPage';
 import Header from './components/Header';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+// import { getRecords } from './utils';
 
 const App = () => {
+  // const [records, setRecords] = useState(getRecords()) 
+
   return (
     <>
       <Header />

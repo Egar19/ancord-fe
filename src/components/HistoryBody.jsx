@@ -1,12 +1,12 @@
 import { FaGreaterThan } from 'react-icons/fa';
 
-const HistoryBody = ({ amount, notes, date }) => {
+const HistoryBody = ({type, amount, notes, date }) => {
   return (
-    <div className='my-4'>
+    <>
       <h2 className='text-xl'>History Dashboard</h2>
       <div className='py-5 grid grid-cols-1 md:grid-cols-2 gap-4'>
         <div className='p-4 bg-accent rounded'>
-          <h3 className='text-xl'>Income</h3>
+          <h3 className='text-xl'>Income {type}</h3>
           <h4>Amount: {amount}</h4>
           <h4>Notes: {notes}</h4>
           <h4>Date: {date}</h4>
@@ -18,7 +18,7 @@ const HistoryBody = ({ amount, notes, date }) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

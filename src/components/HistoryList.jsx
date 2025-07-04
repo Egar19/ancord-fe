@@ -1,9 +1,15 @@
-import HistoryBody from "./HistoryBody"
+import HistoryBody from "./HistoryBody";
 
-const HistoryList = () => {
+const HistoryList = ({ records }) => {
   return (
-    <HistoryBody />
-  )
-}
+    <div className="my-4">
+      {records.length > 0 ? (
+        records.map((record) => <HistoryBody key={record.id} {...record} />)
+      ) : (
+        <p>Belum ada history</p>
+      )}
+    </div>
+  );
+};
 
-export default HistoryList
+export default HistoryList;
