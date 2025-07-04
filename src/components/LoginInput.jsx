@@ -24,7 +24,7 @@ const LoginInput = ({ login }) => {
       method='post'
       onSubmit={handleSubmit}
     >
-      <fieldset className='fieldset bg-base-200 border-base-300 rounded-box w-100 border p-4'>
+      <fieldset className='fieldset bg-warning rounded-box w-100 p-4'>
         <legend className='fieldset-legend text-2xl font-bold'>Login</legend>
 
         <label className='label'>Email</label>
