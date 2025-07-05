@@ -8,6 +8,7 @@ import AddRecordPage from './pages/AddRecordPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import { getRecords } from './utils';
+import DetailPage from './pages/DetailPage';
 
 const App = () => {
   const location = useLocation();
@@ -56,6 +57,7 @@ const App = () => {
           />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
+          <Route path='/record/:id' element={<DetailPage />} />
         </Routes>
       </main>
     </>
