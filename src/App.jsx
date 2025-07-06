@@ -7,8 +7,8 @@ import Navigation from './components/Navigation';
 import AddRecordPage from './pages/AddRecordPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
-import { getRecords } from './utils';
 import DetailPage from './pages/DetailPage';
+import { getRecords } from './utils';
 
 const App = () => {
   const location = useLocation();
@@ -22,15 +22,23 @@ const App = () => {
   const totalIncome = records
     .filter((record) => record.type === 'income')
     .reduce((acc, record) => acc + record.amount, 0);
-
   const totalOutcome = records
     .filter((record) => record.type === 'outcome')
     .reduce((acc, record) => acc + record.amount, 0);
-
   const balance = totalIncome - totalOutcome;
 
-  const handleAddRecord = (newRecord) => {
-    setRecords((prevRecords) => [newRecord, ...prevRecords]);
+  const handleAddRecord = (record) => {
+    setRecords([record, ...records]);
+  };
+
+  const handleDeleteRecord = (id) => {
+    setRecords(records.filter((r) => r.id !== id));
+  };
+
+  const handleUpdateRecord = (id, updatedData) => {
+    setRecords(
+      records.map((r) => (r.id === id ? { ...r, ...updatedData } : r))
+    );
   };
 
   return (
@@ -55,9 +63,18 @@ const App = () => {
             path='/addrecord'
             element={<AddRecordPage onAddRecord={handleAddRecord} />}
           />
+          <Route
+            path='/record/:id'
+            element={
+              <DetailPage
+                records={records}
+                onDelete={handleDeleteRecord}
+                onUpdate={handleUpdateRecord}
+              />
+            }
+          />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
-          <Route path='/record/:id' element={<DetailPage />} />
         </Routes>
       </main>
     </>

@@ -1,5 +1,5 @@
 import { useInput } from "../hooks/useInput";
-import AddRecordInput from "../components/AddRecordInput";
+import RecordInput from "../components/RecordInput";
 
 const AddRecordPage = ({ onAddRecord }) => {
   const [category, setCategory] = useInput("income");
@@ -10,13 +10,13 @@ const AddRecordPage = ({ onAddRecord }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validasi: tidak boleh ada yang kosong
+    // Validation: All fields must be filled
     if (!amount || Number(amount) <= 0 || notes.trim() === "" || date.trim() === "") {
-      alert("Form belum lengkap!");
+      alert("Please complete all required fields.");
       return;
     }
 
-    // Buat record baru
+    // Create new record
     const newRecord = {
       id: Date.now().toString(),
       type: category,
@@ -26,9 +26,9 @@ const AddRecordPage = ({ onAddRecord }) => {
     };
 
     onAddRecord(newRecord);
-    alert("Record berhasil ditambahkan!");
+    alert("Record successfully added!");
 
-    // Reset form
+    // Reset form to default values
     setCategory({ target: { value: "income" } });
     setAmount({ target: { value: 0 } });
     setNotes({ target: { value: "" } });
@@ -36,7 +36,7 @@ const AddRecordPage = ({ onAddRecord }) => {
   };
 
   return (
-    <AddRecordInput
+    <RecordInput
       category={category}
       onCategoryChange={setCategory}
       amount={amount}
@@ -46,6 +46,7 @@ const AddRecordPage = ({ onAddRecord }) => {
       date={date}
       onDateChange={setDate}
       onSubmit={handleSubmit}
+      submitLabel="Add Record"
     />
   );
 };
