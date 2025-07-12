@@ -11,10 +11,7 @@ const LoginInput = ({ login }) => {
       alert('Please fill out this field');
     }
 
-    login({
-      email: email,
-      password: password,
-    });
+    login(email, password);
   };
 
   return (
