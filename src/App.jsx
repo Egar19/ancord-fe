@@ -10,10 +10,18 @@ import DashboardPage from './pages/DashboardPage';
 import DetailPage from './pages/DetailPage';
 import { getRecords } from './utils';
 
+
+import ProtectedRoute from './components/ProtectedRoutes';
+
 const App = () => {
   const location = useLocation();
   const hideNav =
     location.pathname === '/login' ||
+    location.pathname === '/register' ||
+    location.pathname === '/';
+
+  const hideLogout =
+    location.pathname === '/login' || 
     location.pathname === '/register' ||
     location.pathname === '/';
 
@@ -43,7 +51,7 @@ const App = () => {
 
   return (
     <>
-      <Header />
+      <Header showLogOut={!hideLogout} />
       <main className='mx-[10%]'>
         {!hideNav && <Navigation />}
         <Routes>
@@ -51,26 +59,32 @@ const App = () => {
           <Route
             path='/dashboard'
             element={
+              <ProtectedRoute>
               <DashboardPage
                 records={records}
                 balance={balance}
                 totalIncome={totalIncome}
                 totalOutcome={totalOutcome}
               />
+              </ProtectedRoute>
             }
           />
           <Route
             path='/addrecord'
-            element={<AddRecordPage onAddRecord={handleAddRecord} />}
+            element={
+            <ProtectedRoute><AddRecordPage onAddRecord={handleAddRecord} /></ProtectedRoute>
+            }
           />
           <Route
             path='/record/:id'
             element={
-              <DetailPage
-                records={records}
-                onDelete={handleDeleteRecord}
-                onUpdate={handleUpdateRecord}
-              />
+              <ProtectedRoute>
+                <DetailPage
+                  records={records}
+                  onDelete={handleDeleteRecord}
+                  onUpdate={handleUpdateRecord}
+                />
+              </ProtectedRoute>
             }
           />
           <Route path='/login' element={<LoginPage />} />
