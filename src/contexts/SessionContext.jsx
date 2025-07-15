@@ -1,23 +1,24 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { getSession } from "../utils/supabase";
-
+import { createContext, useContext, useEffect, useState } from 'react';
+import { supabase } from '../utils/supabase'; // Supabase SDK
 
 const SessionContext = createContext();
 
 export const SessionProvider = ({ children }) => {
   const [session, setSession] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Cek session dari localStorage atau API
-    const checkSession = async () => {
-      const userSession = await getSession();
-      setSession(userSession);
+    const getSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      setSession(data?.session || null);
+      setIsLoading(false);
     };
-    checkSession();
+
+    getSession();
   }, []);
 
   return (
-    <SessionContext.Provider value={{ session, setSession }}>
+    <SessionContext.Provider value={{ session, setSession, isLoading }}>
       {children}
     </SessionContext.Provider>
   );

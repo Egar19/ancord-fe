@@ -31,6 +31,7 @@ const LoginInput = ({ login }) => {
           placeholder='Email'
           onChange={setEmail}
           value={email}
+          name='email'
         />
 
         <label className='label'>Password</label>
@@ -40,6 +41,7 @@ const LoginInput = ({ login }) => {
           placeholder='Password'
           onChange={setPassword}
           value={password}
+          name='password'
         />
 
         <button className='btn btn-primary mt-4'>Login</button>

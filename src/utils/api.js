@@ -1,3 +1,5 @@
+import { supabase } from './supabase';
+
 export async function loginUser(email, password) {
   const response = await fetch('http://localhost:5000/users/login', {
     method: 'POST',
@@ -23,5 +25,7 @@ export async function logOutUser() {
     body: JSON.stringify({ token: localStorage.getItem('token') }),
   });
   localStorage.removeItem('token');
+
+  await supabase.auth.signOut({ scope: 'local' });
   return response.json();
 }
