@@ -28,7 +28,7 @@ const username = session?.user?.user_metadata?.username || 'User';
 
   return (
     <header className='mb-4 py-4 shadow-2xl flex justify-around items-center px-4 bg-warning'>
-      <h1 className='text-3xl font-bold text-center'>Financial Record</h1>
+      <h1 className='text-3xl font-bold text-center'>AnCord</h1>
       <div className='flex gap-4'>
         <h1 className='text-3xl font-bold text-center'>{username}</h1>
         {showLogOut && (
