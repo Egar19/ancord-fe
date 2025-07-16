@@ -40,7 +40,7 @@ const HistoryList = ({ records }) => {
         {filteredRecords.length > 0 ? (
           filteredRecords.map((record) => <HistoryBody key={record.id} {...record} />)
         ) : (
-          <p>Belum ada Hstory</p>
+          <p>Belum ada History</p>
         )}
       </div>
     </div>
