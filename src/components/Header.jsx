@@ -1,45 +1,56 @@
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../utils/supabase';
 import { useSession } from '../contexts/SessionContext';
+import { IoIosLogOut } from "react-icons/io";
 
-const Header = ({ showLogOut = true }) => {
+const Header = () => {
   const navigate = useNavigate();
   const { session, setSession } = useSession();
 
-const handleLogout = async () => {
-  const { data } = await supabase.auth.getSession();
+  const handleLogout = async () => {
+    const { data } = await supabase.auth.getSession();
 
-  if (data.session) {
-    const { error } = await supabase.auth.signOut({ scope: 'local' });
-    if (error) {
-      console.error('Logout error:', error.message);
+    if (data.session) {
+      const { error } = await supabase.auth.signOut({ scope: 'local' });
+      if (error) {
+        console.error('Logout error:', error.message);
+      } else {
+        console.log('Berhasil logout Supabase');
+      }
     } else {
-      console.log('Berhasil logout Supabase');
+      console.log('Tidak ada session Supabase untuk logout');
     }
-  } else {
-    console.log('Tidak ada session Supabase untuk logout');
-  }
 
-  setSession(null);
-  navigate('/login');
-};
+    setSession(null);
+    navigate('/login');
+  };
 
-const username = session?.user?.user_metadata?.username || 'User';
+  const username = session?.user?.user_metadata?.username || '';
 
   return (
-    <header className='mb-4 py-4 shadow-2xl flex justify-around items-center px-4 bg-warning'>
-      <h1 className='text-3xl font-bold text-center'>AnCord</h1>
-      <div className='flex gap-4'>
-        <h1 className='text-3xl font-bold text-center'>{username}</h1>
-        {showLogOut && (
-          <button
-            className='btn btn-error bg-red-600 text-white text-2xl font-bold text-center pb-3 pt-2'
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        )}
+    <header className='navbar bg-warning shadow-md'>
+      <div className='flex-1'>
+        <a className='btn btn-ghost text-xl'>AnCord</a>
       </div>
+      {session && (
+        <div className='flex-none'>
+          <ul className='menu menu-horizontal px-1'>
+            <li>
+              <details>
+                <summary>{username}</summary>
+                <ul className='bg-base-100 rounded-t-none p-2'>
+                  <li>
+                    <button onClick={handleLogout}>
+                      <IoIosLogOut />
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </div>
+      )}
     </header>
   );
 };
