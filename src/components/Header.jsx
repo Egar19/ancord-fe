@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../utils/supabase'; // Supabase SDK
+import { supabase } from '../utils/supabase';
 import { useSession } from '../contexts/SessionContext';
 
 const Header = ({ showLogOut = true }) => {
   const navigate = useNavigate();
-  const { setSession } = useSession();
+  const { session, setSession } = useSession();
 
 const handleLogout = async () => {
   const { data } = await supabase.auth.getSession();
@@ -24,11 +24,13 @@ const handleLogout = async () => {
   navigate('/login');
 };
 
+const username = session?.user?.user_metadata?.username || 'User';
+
   return (
     <header className='mb-4 py-4 shadow-2xl flex justify-around items-center px-4 bg-warning'>
       <h1 className='text-3xl font-bold text-center'>Financial Record</h1>
       <div className='flex gap-4'>
-        <h1 className='text-3xl font-bold text-center'>Username</h1>
+        <h1 className='text-3xl font-bold text-center'>{username}</h1>
         {showLogOut && (
           <button
             className='btn btn-error bg-red-600 text-white text-2xl font-bold text-center pb-3 pt-2'
