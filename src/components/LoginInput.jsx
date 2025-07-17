@@ -1,26 +1,22 @@
-import { useInput } from '../hooks/useInput';
-import { Link } from 'react-router';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 const LoginInput = ({ login }) => {
-  const [email, setEmail] = useInput('');
-  const [password, setPassword] = useInput('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (email.trim() === '' || password.trim() === '') {
-      alert('Please fill out this field');
-    }
-
+  const onSubmit = ({ email, password }) => {
     login(email, password);
   };
 
   return (
     <form
-      action=''
+      onSubmit={handleSubmit(onSubmit)}
       className='flex justify-center'
       method='post'
-      onSubmit={handleSubmit}
     >
       <fieldset className='fieldset bg-warning rounded-box w-100 p-4'>
         <legend className='fieldset-legend text-2xl font-bold'>Login</legend>
@@ -30,24 +26,26 @@ const LoginInput = ({ login }) => {
           type='email'
           className='input w-full'
           placeholder='Email'
-          onChange={setEmail}
-          value={email}
-          name='email'
+          {...register('email', { required: 'Email is required' })}
         />
+        {errors.email && (
+          <p className='text-red-500 text-sm'>{errors.email.message}</p>
+        )}
 
         <label className='label'>Password</label>
         <input
           type='password'
           className='input w-full'
           placeholder='Password'
-          onChange={setPassword}
-          value={password}
-          name='password'
+          {...register('password', { required: 'Password is required' })}
         />
+        {errors.password && (
+          <p className='text-red-500 text-sm'>{errors.password.message}</p>
+        )}
 
-        <Link to="/register">
-          <h1 className="underline text-info">
-            Dont have any account? Register here
+        <Link to='/register'>
+          <h1 className='underline text-info'>
+            Don't have an account? Register here
           </h1>
         </Link>
 
