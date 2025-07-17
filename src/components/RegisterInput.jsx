@@ -76,12 +76,12 @@ const RegisterInput = ({ register: registerUser }) => {
         )}
 
         <Link to="/login">
-          <h1 className="underline text-info">
+          <h1 className="underline text-secondary">
             Already have an account? Login here
           </h1>
         </Link>
 
-        <button className="btn btn-secondary mt-4">Register</button>
+        <button className="btn btn-primary mt-4">Register</button>
       </fieldset>
     </form>
   );

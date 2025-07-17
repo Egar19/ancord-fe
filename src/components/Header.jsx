@@ -5,7 +5,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { FaRegCircleUser } from "react-icons/fa6";
 import ThemeSwitcher from './ThemeSwitcher';
 
-const Header = () => {
+const Header = ({ showLogOut }) => {
   const navigate = useNavigate();
   const { session, setSession } = useSession();
 
@@ -36,7 +36,8 @@ const Header = () => {
       </div>
 
       <ThemeSwitcher />
-      {session && (
+
+      {session && showLogOut && (
         <div className='flex gap-2 items-center'>
           <span className='font-semibold text-lg'>
             {username}
@@ -48,7 +49,7 @@ const Header = () => {
               className='btn btn-ghost btn-circle avatar'
             >
               <div className='w-10 rounded-full'>
-                <FaRegCircleUser className='size-full'/>
+                <FaRegCircleUser className='size-full' />
               </div>
             </div>
             <ul
