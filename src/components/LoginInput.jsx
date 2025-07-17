@@ -1,4 +1,5 @@
 import { useInput } from '../hooks/useInput';
+import { Link } from 'react-router';
 
 const LoginInput = ({ login }) => {
   const [email, setEmail] = useInput('');
@@ -43,6 +44,12 @@ const LoginInput = ({ login }) => {
           value={password}
           name='password'
         />
+
+        <Link to="/register">
+          <h1 className="underline text-info">
+            Dont have any account? Register here
+          </h1>
+        </Link>
 
         <button className='btn btn-primary mt-4'>Login</button>
       </fieldset>
