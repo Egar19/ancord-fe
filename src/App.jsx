@@ -10,18 +10,20 @@ import DashboardPage from './pages/DashboardPage';
 import DetailPage from './pages/DetailPage';
 import { getRecords } from './utils';
 
-
 import ProtectedRoute from './components/ProtectedRoutes';
+import NotFoundPage from './pages/NotFoundPage';
 
 const App = () => {
   const location = useLocation();
-  const hideNav =
-    location.pathname === '/login' ||
-    location.pathname === '/register' ||
-    location.pathname === '/';
+
+  // Hanya tampilkan Navigation di halaman-halaman berikut
+  const showNavPaths = ['/dashboard', '/addrecord', '/record'];
+  const hideNav = !showNavPaths.some((path) =>
+    location.pathname.startsWith(path)
+  );
 
   const hideLogout =
-    location.pathname === '/login' || 
+    location.pathname === '/login' ||
     location.pathname === '/register' ||
     location.pathname === '/';
 
@@ -60,19 +62,21 @@ const App = () => {
             path='/dashboard'
             element={
               <ProtectedRoute>
-              <DashboardPage
-                records={records}
-                balance={balance}
-                totalIncome={totalIncome}
-                totalOutcome={totalOutcome}
-              />
+                <DashboardPage
+                  records={records}
+                  balance={balance}
+                  totalIncome={totalIncome}
+                  totalOutcome={totalOutcome}
+                />
               </ProtectedRoute>
             }
           />
           <Route
             path='/addrecord'
             element={
-            <ProtectedRoute><AddRecordPage onAddRecord={handleAddRecord} /></ProtectedRoute>
+              <ProtectedRoute>
+                <AddRecordPage onAddRecord={handleAddRecord} />
+              </ProtectedRoute>
             }
           />
           <Route
@@ -89,6 +93,7 @@ const App = () => {
           />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
+          <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </main>
     </>

@@ -11,7 +11,7 @@ const HistoryItem = ({ id, type, amount, notes, date }) => {
       <div className='flex justify-end'>
         <Link
           to={`/record/${id}`}
-          className='inline-flex items-center gap-1 border rounded px-2 py-1 border-neutral-500 text-neutral-500 text-sm hover:bg-neutral-200 transition'
+          className='inline-flex items-center gap-1 border rounded px-2 py-1 text-base-content text-sm transition btn btn-soft'
         >
           Detail
           <FaGreaterThan className='text-xs' />
