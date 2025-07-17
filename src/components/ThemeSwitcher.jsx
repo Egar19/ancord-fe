@@ -34,11 +34,16 @@ const ThemeSwitcher = () => {
       </div>
       <ul
         tabIndex={0}
-        className='dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm'
+        className='dropdown-content flex flex-col bg-base-100 rounded-box z-10 w-52 p-2 shadow-sm max-h-60 overflow-y-auto space-y-1'
       >
         {themes.map((t) => (
           <li key={t}>
-            <a onClick={() => changeTheme(t)}>{t}</a>
+            <a
+              onClick={() => changeTheme(t)}
+              className='cursor-pointer hover:bg-base-200 px-2 py-1 rounded'
+            >
+              {t}
+            </a>
           </li>
         ))}
       </ul>
