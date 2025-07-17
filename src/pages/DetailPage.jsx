@@ -51,7 +51,7 @@ const DetailPage = ({ records, onDelete, onUpdate }) => {
           onCancel={() => setIsEditing(false)}
         />
       ) : (
-        <div className='space-y-2 bg-accent rounded p-4 my-4'>
+        <div className='space-y-2 bg-base-200 rounded p-4 my-4'>
           <h2 className='text-2xl font-semibold mb-4'>Record Details</h2>
           <p>
             <strong>Category:</strong> {record.type}
@@ -67,7 +67,7 @@ const DetailPage = ({ records, onDelete, onUpdate }) => {
           </p>
 
           <div className='mt-4 flex gap-2'>
-            <button className='btn btn-warning' onClick={() => setIsEditing(true)}>
+            <button className='btn btn-secondary' onClick={() => setIsEditing(true)}>
               Edit
             </button>
             <button className='btn btn-error' onClick={handleDelete}>

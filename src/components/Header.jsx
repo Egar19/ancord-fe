@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../utils/supabase';
 import { useSession } from '../contexts/SessionContext';
 import { IoIosLogOut } from "react-icons/io";
+import { FaRegCircleUser } from "react-icons/fa6";
+import ThemeSwitcher from './ThemeSwitcher';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -25,30 +27,42 @@ const Header = () => {
     navigate('/login');
   };
 
-  const username = session?.user?.user_metadata?.username || '';
+  const username = session?.user?.user_metadata?.username || 'User';
 
   return (
-    <header className='navbar bg-warning shadow-md'>
+    <header className='navbar bg-base-100 shadow-sm'>
       <div className='flex-1'>
-        <a className='btn btn-ghost text-xl'>AnCord</a>
+        <p className='btn btn-ghost text-xl'>AnCord</p>
       </div>
+
+      <ThemeSwitcher />
       {session && (
-        <div className='flex-none'>
-          <ul className='menu menu-horizontal px-1'>
-            <li>
-              <details>
-                <summary>{username}</summary>
-                <ul className='bg-base-100 rounded-t-none p-2'>
-                  <li>
-                    <button onClick={handleLogout}>
-                      <IoIosLogOut />
-                      Logout
-                    </button>
-                  </li>
-                </ul>
-              </details>
-            </li>
-          </ul>
+        <div className='flex gap-2 items-center'>
+          <span className='font-semibold text-lg'>
+            {username}
+          </span>
+          <div className='dropdown dropdown-end'>
+            <div
+              tabIndex={0}
+              role='button'
+              className='btn btn-ghost btn-circle avatar'
+            >
+              <div className='w-10 rounded-full'>
+                <FaRegCircleUser className='size-full'/>
+              </div>
+            </div>
+            <ul
+              tabIndex={0}
+              className='menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow'
+            >
+              <li>
+                <button onClick={handleLogout} className='text-accent'>
+                  <IoIosLogOut />
+                  Logout
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       )}
     </header>

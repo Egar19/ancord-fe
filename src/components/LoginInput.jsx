@@ -18,7 +18,7 @@ const LoginInput = ({ login }) => {
       className='flex justify-center'
       method='post'
     >
-      <fieldset className='fieldset bg-warning rounded-box w-100 p-4'>
+      <fieldset className='fieldset bg-base-300 rounded-box w-100 p-4'>
         <legend className='fieldset-legend text-2xl font-bold'>Login</legend>
 
         <label className='label'>Email</label>
@@ -44,7 +44,7 @@ const LoginInput = ({ login }) => {
         )}
 
         <Link to='/register'>
-          <h1 className='underline text-info'>
+          <h1 className='underline text-secondary'>
             Don't have an account? Register here
           </h1>
         </Link>

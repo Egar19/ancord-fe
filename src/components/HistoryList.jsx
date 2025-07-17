@@ -16,19 +16,19 @@ const HistoryList = ({ records }) => {
       {/* Tombol filter */}
       <div className='my-4 space-x-2'>
         <button
-          className={`px-3 py-1 rounded ${filter === 'all' ? 'bg-yellow-400' : 'bg-gray-200'}`}
+          className={`px-3 py-1 rounded ${filter === 'all' ? 'bg-yellow-400' : 'bg-base-200'}`}
           onClick={() => setFilter('all')}
         >
           All
         </button>
         <button
-          className={`px-3 py-1 rounded ${filter === 'income' ? 'bg-green-400' : 'bg-gray-200'}`}
+          className={`px-3 py-1 rounded ${filter === 'income' ? 'bg-green-400' : 'bg-base-200'}`}
           onClick={() => setFilter('income')}
         >
           Income
         </button>
         <button
-          className={`px-3 py-1 rounded ${filter === 'outcome' ? 'bg-red-400' : 'bg-gray-200'}`}
+          className={`px-3 py-1 rounded ${filter === 'outcome' ? 'bg-red-400' : 'bg-base-200'}`}
           onClick={() => setFilter('outcome')}
         >
           Outcome

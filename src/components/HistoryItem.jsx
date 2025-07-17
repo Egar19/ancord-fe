@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const HistoryItem = ({ id, type, amount, notes, date }) => {
   return (
-    <div className='p-4 bg-accent rounded'>
+    <div className='p-4 bg-base-300 rounded'>
       <h3 className='text-xl'>{type}</h3>
       <h4>Amount: {amount}</h4>
       <h4>Notes: {notes}</h4>

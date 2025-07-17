@@ -24,7 +24,7 @@ const RegisterInput = ({ register: registerUser }) => {
 
   return (
     <form className="flex justify-center" onSubmit={handleSubmit(onSubmit)}>
-      <fieldset className="fieldset bg-warning rounded-box w-100 p-4">
+      <fieldset className="fieldset bg-base-300 rounded-box w-100 p-4">
         <legend className="fieldset-legend text-2xl font-bold">Register</legend>
 
         <label className="label">Name</label>
@@ -81,7 +81,7 @@ const RegisterInput = ({ register: registerUser }) => {
           </h1>
         </Link>
 
-        <button className="btn btn-primary mt-4">Register</button>
+        <button className="btn btn-secondary mt-4">Register</button>
       </fieldset>
     </form>
   );
