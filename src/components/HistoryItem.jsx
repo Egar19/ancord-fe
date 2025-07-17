@@ -1,4 +1,4 @@
-import { FaGreaterThan } from 'react-icons/fa';
+import { FaAngleRight } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 
 const HistoryItem = ({ id, type, amount, notes, date }) => {
@@ -14,7 +14,7 @@ const HistoryItem = ({ id, type, amount, notes, date }) => {
           className='inline-flex items-center gap-1 border rounded px-2 py-1 text-base-content text-sm transition btn btn-soft'
         >
           Detail
-          <FaGreaterThan className='text-xs' />
+          <FaAngleRight className='text-xs' />
         </Link>
       </div>
     </div>
