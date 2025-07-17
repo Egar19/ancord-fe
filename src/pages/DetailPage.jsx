@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import RecordInput from '../components/RecordInput';
+import { TbMathLower } from "react-icons/tb";
 
 const DetailPage = ({ records, onDelete, onUpdate }) => {
   const { id } = useParams();
@@ -39,19 +40,31 @@ const DetailPage = ({ records, onDelete, onUpdate }) => {
         <RecordInput
           titleLabel='Edit Record'
           category={editData.type}
-          onCategoryChange={(e) => setEditData({ ...editData, type: e.target.value })}
+          onCategoryChange={(e) =>
+            setEditData({ ...editData, type: e.target.value })
+          }
           amount={editData.amount}
-          onAmountChange={(e) => setEditData({ ...editData, amount: Number(e.target.value) })}
+          onAmountChange={(e) =>
+            setEditData({ ...editData, amount: Number(e.target.value) })
+          }
           notes={editData.notes}
-          onNotesChange={(e) => setEditData({ ...editData, notes: e.target.value })}
+          onNotesChange={(e) =>
+            setEditData({ ...editData, notes: e.target.value })
+          }
           date={editData.date}
-          onDateChange={(e) => setEditData({ ...editData, date: e.target.value })}
+          onDateChange={(e) =>
+            setEditData({ ...editData, date: e.target.value })
+          }
           onSubmit={handleUpdate}
           submitLabel='Save Changes'
           onCancel={() => setIsEditing(false)}
         />
       ) : (
         <div className='space-y-2 bg-base-200 rounded p-4 my-4'>
+          <button className='btn btn-ghost' onClick={() => navigate(-1)}>
+            <TbMathLower />
+            <p>Back</p>
+          </button>
           <h2 className='text-2xl font-semibold mb-4'>Record Details</h2>
           <p>
             <strong>Category:</strong> {record.type}
@@ -67,7 +80,10 @@ const DetailPage = ({ records, onDelete, onUpdate }) => {
           </p>
 
           <div className='mt-4 flex gap-2'>
-            <button className='btn btn-secondary' onClick={() => setIsEditing(true)}>
+            <button
+              className='btn btn-secondary'
+              onClick={() => setIsEditing(true)}
+            >
               Edit
             </button>
             <button className='btn btn-error' onClick={handleDelete}>
