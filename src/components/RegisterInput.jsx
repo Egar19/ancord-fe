@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-const RegisterInput = ({ register: registerUser }) => {
+const RegisterInput = ({ register: registerUser, isSubmitting }) => {
   const {
     register,
     handleSubmit,
@@ -24,7 +24,10 @@ const RegisterInput = ({ register: registerUser }) => {
 
   return (
     <form className="flex justify-center" onSubmit={handleSubmit(onSubmit)}>
-      <fieldset className="fieldset bg-base-300 rounded-box w-100 p-4">
+      <fieldset
+        className="fieldset bg-base-300 rounded-box w-100 p-4"
+        disabled={isSubmitting} // nonaktifkan seluruh field saat loading
+      >
         <legend className="fieldset-legend text-2xl font-bold">Register</legend>
 
         <label className="label">Name</label>
@@ -56,7 +59,13 @@ const RegisterInput = ({ register: registerUser }) => {
           type="password"
           className="input w-full"
           placeholder="Password"
-          {...register('password', { required: 'Password is required', minLength: 6 })}
+          {...register('password', {
+            required: 'Password is required',
+            minLength: {
+              value: 6,
+              message: 'Password must be at least 6 characters',
+            },
+          })}
         />
         {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
 
@@ -76,12 +85,18 @@ const RegisterInput = ({ register: registerUser }) => {
         )}
 
         <Link to="/login">
-          <h1 className="underline text-secondary">
+          <h1 className="underline text-secondary mt-4">
             Already have an account? Login here
           </h1>
         </Link>
 
-        <button className="btn btn-primary mt-4">Register</button>
+        <button
+          type="submit"
+          className="btn btn-primary mt-4 w-full"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Registering...' : 'Register'}
+        </button>
       </fieldset>
     </form>
   );

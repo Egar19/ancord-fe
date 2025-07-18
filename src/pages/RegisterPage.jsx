@@ -5,8 +5,9 @@ import { registerUser } from "../utils/api";
 
 const RegisterPage = () => {
   const [alert, setAlert] = useState({ type: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const showAlert = (type, message, duration = 3000) => {
+  const showAlert = (type, message, duration = 2500) => {
     setAlert({ type, message });
     setTimeout(() => {
       setAlert({ type: "", message: "" });
@@ -14,6 +15,7 @@ const RegisterPage = () => {
   };
 
   const handleRegister = async ({ name, email, password }) => {
+    setIsSubmitting(true);
     try {
       const result = await registerUser(email, password, name);
 
@@ -27,6 +29,8 @@ const RegisterPage = () => {
       }
     } catch (error) {
       showAlert("error", error?.message || "An unexpected error occurred.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -39,7 +43,7 @@ const RegisterPage = () => {
           onClose={() => setAlert({ type: "", message: "" })}
         />
       )}
-      <RegisterInput register={handleRegister} />
+      <RegisterInput register={handleRegister} isSubmitting={isSubmitting} />
     </>
   );
 };

@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-const LoginInput = ({ login }) => {
+const LoginInput = ({ login, isSubmitting }) => {
   const {
     register,
     handleSubmit,
@@ -18,7 +18,10 @@ const LoginInput = ({ login }) => {
       className='flex justify-center'
       method='post'
     >
-      <fieldset className='fieldset bg-base-300 rounded-box w-100 p-4'>
+      <fieldset
+        className='fieldset bg-base-300 rounded-box w-100 p-4'
+        disabled={isSubmitting}
+      >
         <legend className='fieldset-legend text-2xl font-bold'>Login</legend>
 
         <label className='label'>Email</label>
@@ -49,7 +52,13 @@ const LoginInput = ({ login }) => {
           </h1>
         </Link>
 
-        <button className='btn btn-primary mt-4'>Login</button>
+        <button
+          type='submit'
+          className='btn btn-primary mt-4 w-full'
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Logging in...' : 'Login'}
+        </button>
       </fieldset>
     </form>
   );
