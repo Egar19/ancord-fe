@@ -1,22 +1,39 @@
-import { useInput } from "../hooks/useInput";
-import RecordInput from "../components/RecordInput";
+import { useState } from 'react';
+import { useInput } from '../hooks/useInput';
+import RecordInput from '../components/RecordInput';
+import AlertBox from '../components/AlertBox';
+import { useNavigate } from 'react-router-dom';
 
 const AddRecordPage = ({ onAddRecord }) => {
-  const [category, setCategory] = useInput("income");
+  const [category, setCategory] = useInput('income');
   const [amount, setAmount] = useInput(0);
-  const [notes, setNotes] = useInput("");
-  const [date, setDate] = useInput("");
+  const [notes, setNotes] = useInput('');
+  const [date, setDate] = useInput('');
+
+  const [alert, setAlert] = useState({ type: '', message: '' });
+
+  const navigate = useNavigate();
+  const showAlert = (type, message, duration = 2000) => {
+    setAlert({ type, message });
+    setTimeout(() => {
+      setAlert({});
+    }, duration);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validation: All fields must be filled
-    if (!amount || Number(amount) <= 0 || notes.trim() === "" || date.trim() === "") {
-      alert("Please complete all required fields.");
+    // Validation
+    if (
+      !amount ||
+      Number(amount) <= 0 ||
+      notes.trim() === '' ||
+      date.trim() === ''
+    ) {
+      showAlert('error', 'Please complete all required fields.');
       return;
     }
 
-    // Create new record
     const newRecord = {
       id: Date.now().toString(),
       type: category,
@@ -26,28 +43,43 @@ const AddRecordPage = ({ onAddRecord }) => {
     };
 
     onAddRecord(newRecord);
-    alert("Record successfully added!");
+    showAlert('success', 'Record successfully added!');
 
-    // Reset form to default values
-    setCategory({ target: { value: "income" } });
+    //Reset form
+    setCategory({ target: { value: 'income' } });
     setAmount({ target: { value: 0 } });
-    setNotes({ target: { value: "" } });
-    setDate({ target: { value: "" } });
+    setNotes({ target: { value: '' } });
+    setDate({ target: { value: '' } });
+
+    setTimeout(() => {
+      navigate('/dashboard');
+    }, 1000);
   };
 
   return (
-    <RecordInput
-      category={category}
-      onCategoryChange={setCategory}
-      amount={amount}
-      onAmountChange={setAmount}
-      notes={notes}
-      onNotesChange={setNotes}
-      date={date}
-      onDateChange={setDate}
-      onSubmit={handleSubmit}
-      submitLabel="Add Record"
-    />
+    <>
+      {alert.message && (
+        <AlertBox
+          type={alert.type}
+          message={alert.message}
+          onClose={() => setAlert({})}
+        />
+      )}
+
+      <RecordInput
+        titleLabel='Add New Record'
+        category={category}
+        onCategoryChange={setCategory}
+        amount={amount}
+        onAmountChange={setAmount}
+        notes={notes}
+        onNotesChange={setNotes}
+        date={date}
+        onDateChange={setDate}
+        onSubmit={handleSubmit}
+        submitLabel='Add Record'
+      />
+    </>
   );
 };
 

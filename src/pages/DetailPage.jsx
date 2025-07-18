@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import RecordInput from '../components/RecordInput';
+import AlertBox from '../components/AlertBox';
 import { FaAngleLeft } from 'react-icons/fa6';
 
 const DetailPage = ({ records, onDelete, onUpdate }) => {
@@ -17,59 +18,72 @@ const DetailPage = ({ records, onDelete, onUpdate }) => {
     date: record?.date || '',
   });
 
-  if (!record) return <p className='text-center mt-8'>Record not found.</p>;
+  const [alert, setAlert] = useState({ type: '', message: '', onConfirm: null });
 
-  const handleDelete = () => {
-    if (confirm('Are you sure you want to delete this record?')) {
-      onDelete(id);
-      alert('Record deleted');
-      navigate('/dashboard');
+  const showAlert = (type, message, duration = 2000, onConfirm = null) => {
+    setAlert({ type, message, onConfirm });
+
+    if (!onConfirm) {
+      setTimeout(() => {
+        setAlert({});
+      }, duration);
     }
   };
+
+  if (!record) return <p className="text-center mt-8">Record not found.</p>;
 
   const handleUpdate = (e) => {
     e.preventDefault();
     onUpdate(id, editData);
-    alert('Record updated');
+    showAlert('success', 'Record updated successfully.');
     setIsEditing(false);
+  };
+
+  const handleDelete = () => {
+    showAlert('success', 'Record deleted successfully.');
+    setTimeout(() => {
+      onDelete(id);
+      navigate('/dashboard');
+    }, 1000);
   };
 
   return (
     <>
+      {alert.message && (
+        <AlertBox
+          type={alert.type}
+          message={alert.message}
+          onClose={() => setAlert({ type: '', message: '', onConfirm: null })}
+          onConfirm={alert.onConfirm}
+        />
+      )}
+
       {isEditing ? (
         <RecordInput
-          titleLabel='Edit Record'
+          titleLabel="Edit Record"
           category={editData.type}
-          onCategoryChange={(e) =>
-            setEditData({ ...editData, type: e.target.value })
-          }
+          onCategoryChange={(e) => setEditData({ ...editData, type: e.target.value })}
           amount={editData.amount}
-          onAmountChange={(e) =>
-            setEditData({ ...editData, amount: Number(e.target.value) })
-          }
+          onAmountChange={(e) => setEditData({ ...editData, amount: Number(e.target.value) })}
           notes={editData.notes}
-          onNotesChange={(e) =>
-            setEditData({ ...editData, notes: e.target.value })
-          }
+          onNotesChange={(e) => setEditData({ ...editData, notes: e.target.value })}
           date={editData.date}
-          onDateChange={(e) =>
-            setEditData({ ...editData, date: e.target.value })
-          }
+          onDateChange={(e) => setEditData({ ...editData, date: e.target.value })}
           onSubmit={handleUpdate}
-          submitLabel='Save Changes'
+          submitLabel="Save Changes"
           onCancel={() => setIsEditing(false)}
         />
       ) : (
-        <div className='space-y-2 bg-base-200 rounded p-4 my-4'>
+        <div className="space-y-4 bg-base-200 rounded p-4 my-4">
           <button
-            className='inline-flex items-center gap-1 border rounded px-2 py-1 text-base-content text-sm transition btn btn-soft'
+            className="inline-flex items-center gap-1 border rounded px-2 py-1 text-base-content text-sm transition btn btn-soft"
             onClick={() => navigate(-1)}
           >
-            <FaAngleLeft className='text-base' />
-            <span className='leading-none'>Back</span>
+            <FaAngleLeft className="text-base" />
+            <span className="leading-none">Back</span>
           </button>
 
-          <h2 className='text-2xl font-semibold mb-4'>Record Details</h2>
+          <h2 className="text-2xl font-semibold mb-4">Record Details</h2>
           <p>
             <strong>Category:</strong> {record.type}
           </p>
@@ -83,14 +97,24 @@ const DetailPage = ({ records, onDelete, onUpdate }) => {
             <strong>Date:</strong> {record.date}
           </p>
 
-          <div className='mt-4 flex gap-2'>
-            <button
-              className='btn btn-secondary'
-              onClick={() => setIsEditing(true)}
-            >
+          <div className="mt-4 flex gap-2">
+            <button className="btn btn-secondary" onClick={() => setIsEditing(true)}>
               Edit
             </button>
-            <button className='btn btn-error' onClick={handleDelete}>
+            <button
+              className="btn btn-error"
+              onClick={() =>
+                showAlert(
+                  'warning',
+                  'Are you sure you want to delete this record?',
+                  0,
+                  () => {
+                    setAlert({ type: '', message: '', onConfirm: null });
+                    handleDelete();
+                  }
+                )
+              }
+            >
               Delete
             </button>
           </div>
