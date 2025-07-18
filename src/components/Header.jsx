@@ -30,7 +30,7 @@ const Header = ({ showLogOut }) => {
   const username = session?.user?.user_metadata?.username || 'User';
 
   return (
-    <header className='navbar bg-base-100 shadow-sm'>
+    <header className='navbar bg-base-200 shadow-sm'>
       <div className='flex-1'>
         <p className='btn btn-ghost text-xl'>AnCord</p>
       </div>
@@ -57,7 +57,7 @@ const Header = ({ showLogOut }) => {
               className='menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow'
             >
               <li>
-                <button onClick={handleLogout} className='text-accent'>
+                <button onClick={handleLogout} className='text-accent-content'>
                   <IoIosLogOut />
                   Logout
                 </button>

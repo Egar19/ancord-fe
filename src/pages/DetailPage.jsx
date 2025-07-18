@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import RecordInput from '../components/RecordInput';
-import { FaAngleLeft } from "react-icons/fa6";
+import { FaAngleLeft } from 'react-icons/fa6';
 
 const DetailPage = ({ records, onDelete, onUpdate }) => {
   const { id } = useParams();
@@ -61,10 +61,14 @@ const DetailPage = ({ records, onDelete, onUpdate }) => {
         />
       ) : (
         <div className='space-y-2 bg-base-200 rounded p-4 my-4'>
-          <button className='btn btn-ghost' onClick={() => navigate(-1)}>
-            <FaAngleLeft />
-            <p>Back</p>
+          <button
+            className='inline-flex items-center gap-1 border rounded px-2 py-1 text-base-content text-sm transition btn btn-soft'
+            onClick={() => navigate(-1)}
+          >
+            <FaAngleLeft className='text-base' />
+            <span className='leading-none'>Back</span>
           </button>
+
           <h2 className='text-2xl font-semibold mb-4'>Record Details</h2>
           <p>
             <strong>Category:</strong> {record.type}

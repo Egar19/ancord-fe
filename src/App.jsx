@@ -17,7 +17,7 @@ const App = () => {
   const location = useLocation();
 
   // Hanya tampilkan Navigation di halaman-halaman berikut
-  const showNavPaths = ['/dashboard', '/addrecord', '/record'];
+  const showNavPaths = ['/dashboard', '/addrecord'];
   const hideNav = !showNavPaths.some((path) =>
     location.pathname.startsWith(path)
   );
