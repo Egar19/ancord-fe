@@ -17,13 +17,7 @@ function SearchBar({ onSearch, placeholder = 'Cari transaksi...' }) {
         value={query}
         onChange={handleChange}
         placeholder={placeholder}
-        style={{
-          padding: '0.5rem 1rem',
-          borderRadius: '4px',
-          border: '1px solid #ccc',
-          width: '100%',
-          fontSize: '1rem',
-        }}
+        className="w-full px-4 py-2 rounded-box border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary text-base rounded-box"
       />
     </div>
   );

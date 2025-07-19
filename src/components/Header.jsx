@@ -47,7 +47,7 @@ const Header = ({ showLogOut, onSearch }) => {
 
       {session && showLogOut && (
         <div className='flex gap-2 items-center'>
-          <span className='font-semibold text-lg'>
+          <span className='font-semibold text-lg pr-4'>
             {username}
           </span>
           <div className='dropdown dropdown-end'>
@@ -62,10 +62,10 @@ const Header = ({ showLogOut, onSearch }) => {
             </div>
             <ul
               tabIndex={0}
-              className='menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow'
+              className='menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow border border-neutral/40 dark:border-neutral-600'
             >
               <li>
-                <button onClick={handleLogout} className='text-accent-content'>
+                <button onClick={handleLogout} className='text-red-600 text-lg flex items-center gap-2'>
                   <IoIosLogOut />
                   Logout
                 </button>
