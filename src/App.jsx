@@ -1,3 +1,4 @@
+import UpdateRecordPage from './pages/UpdateRecordPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -10,15 +11,14 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import DetailPage from './pages/DetailPage';
 import { getRecords } from './utils';
+import { getTransactionById } from './utils/api';
 import ProtectedRoute from './components/ProtectedRoutes';
 import NotFoundPage from './pages/NotFoundPage';
 import LandingPage from './pages/LandingPage';
 
 const App = () => {
   const location = useLocation();
-
-  // Hanya tampilkan Navigation di halaman-halaman berikut
-  const showNavPaths = ['/dashboard', '/addrecord'];
+  const showNavPaths = ['/dashboard', '/addrecord', '/updaterecord'];
   const hideNav = !showNavPaths.some((path) =>
     location.pathname.startsWith(path)
   );
@@ -53,8 +53,7 @@ const App = () => {
     );
   };
 
-  // Tentukan apakah perlu margin khusus
-  const withMargin = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/addrecord');
+  const withMargin = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/addrecord') || location.pathname.startsWith('/updaterecord');
 
   return (
     <>
@@ -63,6 +62,14 @@ const App = () => {
         {!hideNav && <Navigation />}
         <Routes>
           <Route path='/' element={<LandingPage />} />
+          <Route
+            path='/updaterecord/:id'
+            element={
+              <ProtectedRoute>
+                <UpdateRecordPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path='/dashboard'
             element={
