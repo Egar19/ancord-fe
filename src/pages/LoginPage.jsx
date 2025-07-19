@@ -21,7 +21,7 @@ const LoginPage = () => {
   };
 
   const handleLogin = async (email, password) => {
-    setIsSubmitting(true); // ⛔️ Mulai disable
+    setIsSubmitting(true);
     try {
       const result = await loginUser(email, password);
       const session = result?.data?.session;
@@ -40,7 +40,7 @@ const LoginPage = () => {
     } catch (err) {
       showAlert('error', err?.message || 'Unexpected error occurred.');
     } finally {
-      setIsSubmitting(false); // ✅ Enable lagi
+      setIsSubmitting(false);
     }
   };
 
