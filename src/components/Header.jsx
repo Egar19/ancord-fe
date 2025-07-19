@@ -1,18 +1,32 @@
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import { supabase } from '../utils/supabase';
 import { useSession } from '../contexts/SessionContext';
 import { IoIosLogOut } from "react-icons/io";
 import { FaRegCircleUser } from "react-icons/fa6";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import ThemeSwitcher from './ThemeSwitcher';
 
 const Header = ({ showLogOut, onSearch }) => {
   const navigate = useNavigate();
   const { session, setSession } = useSession();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    if (!dropdownOpen) return;
+    function handleClick(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [dropdownOpen]);
 
   const handleLogout = async () => {
     const { data } = await supabase.auth.getSession();
-
     if (data.session) {
       const { error } = await supabase.auth.signOut({ scope: 'local' });
       if (error) {
@@ -23,7 +37,6 @@ const Header = ({ showLogOut, onSearch }) => {
     } else {
       console.log('Tidak ada session Supabase untuk logout');
     }
-
     setSession(null);
     navigate('/login');
   };
@@ -31,9 +44,20 @@ const Header = ({ showLogOut, onSearch }) => {
   const username = session?.user?.user_metadata?.username || 'User';
 
   return (
-    <header className='navbar bg-base-200 shadow-sm flex flex-col gap-2 md:flex-row md:items-center'>
+    <header className='navbar bg-base-200 shadow-sm flex flex-col gap-2 md:flex-row md:items-center sticky top-0 z-30'>
       <div className='flex-1 flex items-center'>
-        <p className='btn btn-ghost text-xl'>AnCord</p>
+        <button
+          className='btn btn-ghost text-xl'
+          onClick={() => {
+            if (session) {
+              navigate('/dashboard');
+            } else {
+              navigate('/');
+            }
+          }}
+        >
+          AnCord
+        </button>
       </div>
 
 
@@ -45,7 +69,7 @@ const Header = ({ showLogOut, onSearch }) => {
 
       <ThemeSwitcher />
 
-      {session && showLogOut && (
+      {session && showLogOut ? (
         <div className='flex gap-2 items-center'>
           <span className='font-semibold text-lg pr-4'>
             {username}
@@ -72,6 +96,30 @@ const Header = ({ showLogOut, onSearch }) => {
               </li>
             </ul>
           </div>
+        </div>
+      ) : !session && (
+        <div className='dropdown dropdown-end' ref={dropdownRef}>
+          <button
+            className='btn btn-ghost flex items-center gap-2 cursor-pointer'
+            onClick={() => setDropdownOpen((v) => !v)}
+            aria-label='Open login/register menu'
+          >
+            {dropdownOpen ? (
+              <FaChevronUp className='text-xl' />
+            ) : (
+              <FaChevronDown className='text-xl' />
+            )}
+          </button>
+          {dropdownOpen && (
+            <ul className='menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-40 p-2 shadow border border-neutral/40 dark:border-neutral-600'>
+              <li>
+                <button onClick={() => { setDropdownOpen(false); navigate('/login'); }} className='text-base'>Login</button>
+              </li>
+              <li>
+                <button onClick={() => { setDropdownOpen(false); navigate('/register'); }} className='text-base'>Register</button>
+              </li>
+            </ul>
+          )}
         </div>
       )}
     </header>
