@@ -10,9 +10,9 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import DetailPage from './pages/DetailPage';
 import { getRecords } from './utils';
-
 import ProtectedRoute from './components/ProtectedRoutes';
 import NotFoundPage from './pages/NotFoundPage';
+import LandingPage from './pages/LandingPage';
 
 const App = () => {
   const location = useLocation();
@@ -53,13 +53,16 @@ const App = () => {
     );
   };
 
+  // Tentukan apakah perlu margin khusus
+  const withMargin = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/addrecord');
+
   return (
     <>
       <Header showLogOut={!hideLogout} onSearch={setSearchQuery} />
-      <main className='mx-[10%]'>
+      <main className={withMargin ? 'mx-[10%]' : ''}>
         {!hideNav && <Navigation />}
         <Routes>
-          <Route path='/' element={<h2>Landing Page</h2>} />
+          <Route path='/' element={<LandingPage />} />
           <Route
             path='/dashboard'
             element={
