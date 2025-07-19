@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { addTransaction } from '../utils/api';
 
 const AddRecordPage = ({ onAddRecord }) => {
-  const [category, setCategory] = useInput('income');
-  const [amount, setAmount] = useInput(0);
+  const [category, setCategory] = useInput('');
+  const [amount, setAmount] = useInput('');
   const [notes, setNotes] = useInput('');
   const [date, setDate] = useInput('');
 
@@ -52,8 +52,8 @@ const AddRecordPage = ({ onAddRecord }) => {
       if (result.success || result.id || result.data) {
         showAlert('success', 'Record successfully added!');
         //Reset form
-        setCategory({ target: { value: 'income' } });
-        setAmount({ target: { value: 0 } });
+        setCategory({ target: { value: '' } });
+        setAmount({ target: { value: '' } });
         setNotes({ target: { value: '' } });
         setDate({ target: { value: '' } });
         setTimeout(() => {
