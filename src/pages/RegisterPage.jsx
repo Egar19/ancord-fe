@@ -1,16 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import RegisterInput from "../components/RegisterInput";
 import AlertBox from "../components/AlertBox";
 import { registerUser } from "../utils/api";
 
+
 const RegisterPage = () => {
-  const [alert, setAlert] = useState({ type: "", message: "" });
+  const navigate = useNavigate();
+  const [alert, setAlert] = useState({ type: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const showAlert = (type, message, duration = 2500) => {
+  const showAlert = (type, message, duration = 3000) => {
     setAlert({ type, message });
     setTimeout(() => {
-      setAlert({ type: "", message: "" });
+      setAlert({ type: '', message: '' });
     }, duration);
   };
 
@@ -18,17 +21,16 @@ const RegisterPage = () => {
     setIsSubmitting(true);
     try {
       const result = await registerUser(email, password, name);
-
-      if (result?.status === "success") {
-        showAlert("success", "Registration successful! Redirecting...");
+      if (result?.status === 'success') {
+        showAlert('success', 'Registration successful! Redirecting...');
         setTimeout(() => {
-          window.location.href = "/login";
+          navigate('/login');
         }, 2000);
       } else {
-        showAlert("error", result?.message || "Registration failed.");
+        showAlert('error', result?.message || 'Registration failed.');
       }
     } catch (error) {
-      showAlert("error", error?.message || "An unexpected error occurred.");
+      showAlert('error', error?.message || 'An unexpected error occurred.');
     } finally {
       setIsSubmitting(false);
     }
@@ -40,7 +42,7 @@ const RegisterPage = () => {
         <AlertBox
           type={alert.type}
           message={alert.message}
-          onClose={() => setAlert({ type: "", message: "" })}
+          onClose={() => setAlert({ type: '', message: '' })}
         />
       )}
       <RegisterInput register={handleRegister} isSubmitting={isSubmitting} />
