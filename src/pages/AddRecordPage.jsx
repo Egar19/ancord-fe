@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useInput } from '../hooks/useInput';
+import { supabase } from '../utils/supabase';
 import RecordInput from '../components/RecordInput';
 import AlertBox from '../components/AlertBox';
 import { useNavigate } from 'react-router-dom';
+import { addTransaction } from '../utils/api';
 
 const AddRecordPage = ({ onAddRecord }) => {
   const [category, setCategory] = useInput('income');
@@ -20,7 +22,7 @@ const AddRecordPage = ({ onAddRecord }) => {
     }, duration);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validation
@@ -35,25 +37,34 @@ const AddRecordPage = ({ onAddRecord }) => {
     }
 
     const newRecord = {
-      id: Date.now().toString(),
       type: category,
       amount: Number(amount),
       notes,
-      date,
+      transaction_date: date,
     };
 
-    onAddRecord(newRecord);
-    showAlert('success', 'Record successfully added!');
+    const { data } = await supabase.auth.getSession();
+    const token = data?.session?.access_token;
+    console.log('Token:', token);
 
-    //Reset form
-    setCategory({ target: { value: 'income' } });
-    setAmount({ target: { value: 0 } });
-    setNotes({ target: { value: '' } });
-    setDate({ target: { value: '' } });
-
-    setTimeout(() => {
-      navigate('/dashboard');
-    }, 1000);
+    try {
+      const result = await addTransaction(newRecord, token);
+      if (result.success || result.id || result.data) {
+        showAlert('success', 'Record successfully added!');
+        //Reset form
+        setCategory({ target: { value: 'income' } });
+        setAmount({ target: { value: 0 } });
+        setNotes({ target: { value: '' } });
+        setDate({ target: { value: '' } });
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1000);
+      } else {
+        showAlert('error', result.message || 'Failed to add record.');
+      }
+    } catch (err) {
+      showAlert('error', 'Server error.');
+    }
   };
 
   return (

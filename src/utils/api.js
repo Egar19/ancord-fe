@@ -29,3 +29,51 @@ export async function logOutUser() {
   await supabase.auth.signOut({ scope: 'local' });
   return response.json();
 }
+
+export async function getTransactions(token) {
+  const response = await fetch('http://localhost:5000/transactions', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  return response.json();
+}
+
+export async function addTransaction(data, token) {
+  const response = await fetch('http://localhost:5000/transactions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+export async function deleteTransaction(id, token) {
+  const response = await fetch(`http://localhost:5000/transactions/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  return response.json();
+}
+
+export async function updateTransaction(id, data, token) {
+  const response = await fetch(`http://localhost:5000/transactions/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+
