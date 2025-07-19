@@ -3,6 +3,7 @@ import { useState } from 'react';
 import RecordInput from '../components/RecordInput';
 import AlertBox from '../components/AlertBox';
 import { FaAngleLeft } from 'react-icons/fa6';
+import { formatRupiah } from '../utils/formatRupiah';
 
 const DetailPage = ({ records, onDelete, onUpdate }) => {
   const { id } = useParams();
@@ -79,7 +80,7 @@ const DetailPage = ({ records, onDelete, onUpdate }) => {
             className="inline-flex items-center gap-1 border rounded px-2 py-1 text-base-content text-sm transition btn btn-soft"
             onClick={() => navigate(-1)}
           >
-            <FaAngleLeft className="text-base" />
+            <FaAngleLeft className="text-xs" />
             <span className="leading-none">Back</span>
           </button>
 
@@ -88,7 +89,7 @@ const DetailPage = ({ records, onDelete, onUpdate }) => {
             <strong>Category:</strong> {record.type}
           </p>
           <p>
-            <strong>Amount:</strong> {record.amount}
+            <strong>Amount:</strong> {formatRupiah(record.amount)}
           </p>
           <p>
             <strong>Notes:</strong> {record.notes}
