@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import LoginPage from './pages/LoginPage';
 import Header from './components/Header';
+import useSearch from './hooks/useSearch';
 import Navigation from './components/Navigation';
 import AddRecordPage from './pages/AddRecordPage';
 import RegisterPage from './pages/RegisterPage';
@@ -28,6 +29,7 @@ const App = () => {
     location.pathname === '/';
 
   const [records, setRecords] = useState(getRecords());
+  const { filteredRecords, setSearchQuery } = useSearch(records);
 
   const totalIncome = records
     .filter((record) => record.type === 'income')
@@ -53,7 +55,7 @@ const App = () => {
 
   return (
     <>
-      <Header showLogOut={!hideLogout} />
+      <Header showLogOut={!hideLogout} onSearch={setSearchQuery} />
       <main className='mx-[10%]'>
         {!hideNav && <Navigation />}
         <Routes>
@@ -67,6 +69,7 @@ const App = () => {
                   balance={balance}
                   totalIncome={totalIncome}
                   totalOutcome={totalOutcome}
+                  filteredRecords={filteredRecords}
                 />
               </ProtectedRoute>
             }

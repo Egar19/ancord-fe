@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
+import SearchBar from './SearchBar';
 import { supabase } from '../utils/supabase';
 import { useSession } from '../contexts/SessionContext';
 import { IoIosLogOut } from "react-icons/io";
 import { FaRegCircleUser } from "react-icons/fa6";
 import ThemeSwitcher from './ThemeSwitcher';
 
-const Header = ({ showLogOut }) => {
+const Header = ({ showLogOut, onSearch }) => {
   const navigate = useNavigate();
   const { session, setSession } = useSession();
 
@@ -30,10 +31,17 @@ const Header = ({ showLogOut }) => {
   const username = session?.user?.user_metadata?.username || 'User';
 
   return (
-    <header className='navbar bg-base-200 shadow-sm'>
-      <div className='flex-1'>
+    <header className='navbar bg-base-200 shadow-sm flex flex-col gap-2 md:flex-row md:items-center'>
+      <div className='flex-1 flex items-center'>
         <p className='btn btn-ghost text-xl'>AnCord</p>
       </div>
+
+
+      {session && (
+        <div className='w-full md:w-auto md:flex-1'>
+          <SearchBar onSearch={onSearch} />
+        </div>
+      )}
 
       <ThemeSwitcher />
 
