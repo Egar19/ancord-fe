@@ -7,6 +7,13 @@ const iconMap = {
   warning: <FaExclamationTriangle className="text-yellow-600 w-6 h-6" />,
 };
 
+const bgMap = {
+  success: 'bg-green-100 border-green-400',
+  error: 'bg-red-100 border-red-400',
+  info: 'bg-blue-100 border-blue-400',
+  warning: 'bg-yellow-100 border-yellow-400',
+};
+
 const AlertBox = ({ type = 'info', message, onClose, onConfirm }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-8">
@@ -18,7 +25,7 @@ const AlertBox = ({ type = 'info', message, onClose, onConfirm }) => {
       />
 
       {/* ALERT BOX */}
-      <div className={`alert shadow-lg z-10 ${getAlertClass(type)} w-full max-w-md mx-auto`}>
+      <div className={`alert shadow-lg z-10 ${getAlertClass(type)} w-full max-w-md mx-auto border ${bgMap[type] || ''}`}>
         {iconMap[type]}
         <span className="text-sm">{message}</span>
         <div className="ml-auto space-x-2">

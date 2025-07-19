@@ -6,6 +6,7 @@ import AlertBox from '../components/AlertBox';
 import { useNavigate } from 'react-router-dom';
 import { addTransaction } from '../utils/api';
 
+// eslint-disable-next-line no-unused-vars
 const AddRecordPage = ({ onAddRecord }) => {
   const [category, setCategory] = useInput('');
   const [amount, setAmount] = useInput('');
@@ -27,6 +28,7 @@ const AddRecordPage = ({ onAddRecord }) => {
 
     // Validation
     if (
+      !category ||
       !amount ||
       Number(amount) <= 0 ||
       notes.trim() === '' ||
@@ -45,8 +47,7 @@ const AddRecordPage = ({ onAddRecord }) => {
 
     const { data } = await supabase.auth.getSession();
     const token = data?.session?.access_token;
-    console.log('Token:', token);
-
+    
     try {
       const result = await addTransaction(newRecord, token);
       if (result.success || result.id || result.data) {
@@ -62,7 +63,7 @@ const AddRecordPage = ({ onAddRecord }) => {
       } else {
         showAlert('error', result.message || 'Failed to add record.');
       }
-    } catch (err) {
+    } catch {
       showAlert('error', 'Server error.');
     }
   };

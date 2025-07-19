@@ -25,13 +25,24 @@ export async function logOutUser() {
     body: JSON.stringify({ token: localStorage.getItem('token') }),
   });
   localStorage.removeItem('token');
-
+  
   await supabase.auth.signOut({ scope: 'local' });
   return response.json();
 }
 
 export async function getTransactions(token) {
   const response = await fetch('http://localhost:5000/transactions', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  return response.json();
+}
+
+export async function getTransactionById(id, token) {
+  const response = await fetch(`http://localhost:5000/transactions/${id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
