@@ -31,7 +31,7 @@ const App = () => {
 
   const [records, setRecords] = useState([]);
 
-  // ✅ Ekstrak fetchTransactions agar bisa digunakan ulang
+  // Ekstrak fetchTransactions agar bisa digunakan ulang
   const fetchTransactions = useCallback(async () => {
     try {
       const { data } = await supabase.auth.getSession();
@@ -55,7 +55,7 @@ const App = () => {
     }
   }, []);
 
-  // ✅ Panggil saat pertama kali load
+  // Panggil saat pertama kali load
   useEffect(() => {
     fetchTransactions();
   }, [fetchTransactions]);
@@ -126,7 +126,7 @@ const App = () => {
               <ProtectedRoute>
                 <UpdateRecordPage
                   onUpdateRecord={handleUpdateRecord}
-                  refetchRecords={fetchTransactions} // ✅ dikirim biar bisa refetch setelah update
+                  refetchRecords={fetchTransactions}
                 />
               </ProtectedRoute>
             }
