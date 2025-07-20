@@ -1,73 +1,71 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useInput } from '../hooks/useInput';
 import { supabase } from '../utils/supabase';
+import { updateTransaction, getTransactionById } from '../utils/api';
+
 import UpdateInput from '../components/UpdateInput';
 import AlertBox from '../components/AlertBox';
-import { useNavigate, useParams } from 'react-router-dom';
-import { updateTransaction, getTransactionById } from '../utils/api';
-import { useEffect } from 'react';
 
-const UpdateRecordPage = () => {
+const UpdateRecordPage = ({ onUpdateRecord, refetchRecords }) => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [category, setCategory] = useInput('');
   const [amount, setAmount] = useInput('');
   const [notes, setNotes] = useInput('');
   const [date, setDate] = useInput('');
+
   const [alert, setAlert] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
+  // ✅ Ambil data transaksi berdasarkan ID
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const { data } = await supabase.auth.getSession();
         const token = data?.session?.access_token;
+
         if (!token) {
-          setAlert({ type: 'error', message: 'No session token. Please login again.' });
-          setLoading(false);
+          showAlert('error', 'No session token. Please login again.');
           return;
         }
+
         const result = await getTransactionById(id, token);
         if (result && (result.success || result.data)) {
-          const trx = result.data || result;
-          console.log('Fetched trx:', trx);
-          const data = trx.transactions || trx;
-          setCategory({ target: { value: data.type || '' } });
-          setAmount({ target: { value: data.amount?.toString() || '' } });
-          setNotes({ target: { value: data.notes || '' } });
-          setDate({ target: { value: data.transaction_date || '' } });
+          const trx = result.data?.transactions || result.data || result;
+          setCategory({ target: { value: trx.type || '' } });
+          setAmount({ target: { value: trx.amount?.toString() || '' } });
+          setNotes({ target: { value: trx.notes || '' } });
+          setDate({ target: { value: trx.transaction_date || '' } });
         } else {
-          // Tampilkan pesan error dari respons jika ada
-          setAlert({ type: 'error', message: result?.message || 'Failed to fetch record.' });
-          if (result && result.error) {
-            // eslint-disable-next-line no-console
-            console.error('API error:', result.error);
-          }
+          showAlert('error', result?.message || 'Failed to fetch record.');
         }
       } catch (err) {
-        // eslint-disable-next-line no-console
-        setAlert({ type: 'error', message: err?.message || 'Server error.' });
+        showAlert('error', err?.message || 'Server error.');
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
+
     fetchData();
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const showAlert = (type, message, duration = 2000) => {
     setAlert({ type, message });
-    setTimeout(() => {
-      setAlert({});
-    }, duration);
+    setTimeout(() => setAlert({}), duration);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!amount || Number(amount) <= 0 || notes.trim() === '' || date.trim() === '') {
       showAlert('error', 'Please complete all required fields.');
       return;
     }
+
     setLoading(true);
     const updatedRecord = {
       type: category,
@@ -75,12 +73,25 @@ const UpdateRecordPage = () => {
       notes,
       transaction_date: date,
     };
+
     try {
       const { data } = await supabase.auth.getSession();
       const token = data?.session?.access_token;
+
       const result = await updateTransaction(id, updatedRecord, token);
       if (result.status === 'success') {
         showAlert('success', result.message || 'Record successfully updated!');
+
+        // Update state lokal di App (jika ada)
+        if (onUpdateRecord) {
+          onUpdateRecord(id, updatedRecord);
+        }
+
+        // Refetch dari server
+        if (refetchRecords) {
+          await refetchRecords();
+        }
+
         setTimeout(() => {
           navigate('/dashboard');
         }, 1000);
@@ -89,8 +100,9 @@ const UpdateRecordPage = () => {
       }
     } catch {
       showAlert('error', 'Server error.');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -113,7 +125,7 @@ const UpdateRecordPage = () => {
         date={date}
         onDateChange={setDate}
         onSubmit={handleSubmit}
-        submitLabel="Update Record"
+        submitLabel={loading ? 'Updating...' : 'Update Record'}
         onCancel={() => navigate('/dashboard')}
       />
     </>

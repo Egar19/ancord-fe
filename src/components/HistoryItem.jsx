@@ -2,7 +2,7 @@ import { FaAngleRight } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { formatRupiah } from '../utils/formatRupiah';
 
-const HistoryItem = ({ id, type, amount, notes, date }) => {
+const HistoryItem = ({ id, type, amount, notes, transaction_date: date }) => {
   return (
     <div className='p-4 bg-base-300 rounded'>
       <h3 className='text-xl'>{type}</h3>
