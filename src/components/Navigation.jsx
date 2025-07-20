@@ -26,16 +26,6 @@ const Navigation = () => {
             readOnly
           />
         </Link>
-        <Link to='/updaterecord/27'> {/* Example ID, replace with dynamic ID as needed */}
-          <input
-            type='radio'
-            name='updaterecord'
-            className='tab'
-            aria-label='Update Record'
-            checked={location.pathname.startsWith('/updaterecord')}
-            readOnly
-          />
-        </Link>
       </nav>
     </>
   );
