@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function SearchBar({ onSearch, placeholder = 'Cari transaksi...' }) {
+function SearchBar({ onSearch, placeholder = 'Search record...' }) {
   const [query, setQuery] = useState('');
 
   const handleChange = (e) => {
@@ -11,15 +11,32 @@ function SearchBar({ onSearch, placeholder = 'Cari transaksi...' }) {
   };
 
   return (
-    <div className="search-bar">
+    <label className='input'>
+      <svg
+        className='h-[1em] opacity-50'
+        xmlns='http://www.w3.org/2000/svg'
+        viewBox='0 0 24 24'
+      >
+        <g
+          strokeLinejoin='round'
+          strokeLinecap='round'
+          strokeWidth='2.5'
+          fill='none'
+          stroke='currentColor'
+        >
+          <circle cx='11' cy='11' r='8'></circle>
+          <path d='m21 21-4.3-4.3'></path>
+        </g>
+      </svg>
       <input
-        type="text"
+        type='search'
+        required
+        placeholder={placeholder}
         value={query}
         onChange={handleChange}
-        placeholder={placeholder}
-        className="w-full px-4 py-2 rounded-box border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary text-base rounded-box"
+        className='w-full bg-transparent focus:outline-none'
       />
-    </div>
+    </label>
   );
 }
 

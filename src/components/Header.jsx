@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import { supabase } from '../utils/supabase';
 import { useSession } from '../contexts/SessionContext';
-import { IoIosLogOut } from "react-icons/io";
-import { FaRegCircleUser } from "react-icons/fa6";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { IoIosLogOut } from 'react-icons/io';
+import { FaRegCircleUser } from 'react-icons/fa6';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import ThemeSwitcher from './ThemeSwitcher';
 
 const Header = ({ showLogOut, onSearch }) => {
@@ -60,20 +60,13 @@ const Header = ({ showLogOut, onSearch }) => {
         </button>
       </div>
 
-
-      {session && (
-        <div className='w-full md:w-auto md:flex-1'>
-          <SearchBar onSearch={onSearch} />
-        </div>
-      )}
+      {session && showLogOut && <SearchBar onSearch={onSearch} />}
 
       <ThemeSwitcher />
 
       {session && showLogOut ? (
         <div className='flex gap-2 items-center'>
-          <span className='font-semibold text-lg pr-4'>
-            {username}
-          </span>
+          <span className='font-semibold text-lg pr-4'>{username}</span>
           <div className='dropdown dropdown-end'>
             <div
               tabIndex={0}
@@ -89,7 +82,10 @@ const Header = ({ showLogOut, onSearch }) => {
               className='menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow border border-neutral/40 dark:border-neutral-600'
             >
               <li>
-                <button onClick={handleLogout} className='text-red-600 text-lg flex items-center gap-2'>
+                <button
+                  onClick={handleLogout}
+                  className='text-red-600 text-lg flex items-center gap-2'
+                >
                   <IoIosLogOut />
                   Logout
                 </button>
@@ -97,30 +93,48 @@ const Header = ({ showLogOut, onSearch }) => {
             </ul>
           </div>
         </div>
-      ) : !session && (
-        <div className='dropdown dropdown-end' ref={dropdownRef}>
-          <button
-            className='btn btn-ghost flex items-center gap-2 cursor-pointer'
-            onClick={() => setDropdownOpen((v) => !v)}
-            aria-label='Open login/register menu'
-          >
-            {dropdownOpen ? (
-              <FaChevronUp className='text-xl' />
-            ) : (
-              <FaChevronDown className='text-xl' />
+      ) : (
+        !session && (
+          <div className='dropdown dropdown-end' ref={dropdownRef}>
+            <button
+              className='btn btn-ghost flex items-center gap-2 cursor-pointer'
+              onClick={() => setDropdownOpen((v) => !v)}
+              aria-label='Open login/register menu'
+            >
+              {dropdownOpen ? (
+                <FaChevronUp className='text-xl' />
+              ) : (
+                <FaChevronDown className='text-xl' />
+              )}
+            </button>
+            {dropdownOpen && (
+              <ul className='menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-40 p-2 shadow border border-neutral/40 dark:border-neutral-600'>
+                <li>
+                  <button
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      navigate('/login');
+                    }}
+                    className='text-base'
+                  >
+                    Login
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      navigate('/register');
+                    }}
+                    className='text-base'
+                  >
+                    Register
+                  </button>
+                </li>
+              </ul>
             )}
-          </button>
-          {dropdownOpen && (
-            <ul className='menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-40 p-2 shadow border border-neutral/40 dark:border-neutral-600'>
-              <li>
-                <button onClick={() => { setDropdownOpen(false); navigate('/login'); }} className='text-base'>Login</button>
-              </li>
-              <li>
-                <button onClick={() => { setDropdownOpen(false); navigate('/register'); }} className='text-base'>Register</button>
-              </li>
-            </ul>
-          )}
-        </div>
+          </div>
+        )
       )}
     </header>
   );

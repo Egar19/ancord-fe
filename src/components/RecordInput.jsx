@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { formatRupiah } from '../utils/formatRupiah';
 import { FaCheck, FaTimes, FaCalendarAlt } from 'react-icons/fa';
 import DatePicker from 'react-datepicker';
@@ -24,7 +24,7 @@ const RecordInput = ({
   const amountRef = useRef(null);
   const [displayAmount, setDisplayAmount] = useState(amount);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDisplayAmount(amount);
   }, [amount]);
 
@@ -79,12 +79,12 @@ const RecordInput = ({
             setDisplayAmount(raw);
             onAmountChange({ target: { value: raw } });
           }}
-          onBlur={e => {
+          onBlur={() => {
             if (displayAmount && !isNaN(displayAmount)) {
               setDisplayAmount(formatRupiah(Number(displayAmount)));
             }
           }}
-          onFocus={e => {
+          onFocus={() => {
             setDisplayAmount(amount);
           }}
           min={1}

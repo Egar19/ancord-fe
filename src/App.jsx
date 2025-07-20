@@ -14,7 +14,7 @@ import UpdateRecordPage from './pages/UpdateRecordPage';
 import DetailPage from './pages/DetailPage';
 import NotFoundPage from './pages/NotFoundPage';
 
-import { getTransactions } from './utils/api';
+import { getTransactions, deleteTransaction } from './utils/api';
 import { supabase } from './utils/supabase';
 import useSearch from './hooks/useSearch';
 
@@ -74,8 +74,29 @@ const App = () => {
     setRecords([newRecord, ...records]);
   };
 
-  const handleDeleteRecord = (id) => {
-    setRecords(records.filter((r) => r.id !== id));
+  const handleDeleteRecord = async (id) => {
+    try {
+      const { data } = await supabase.auth.getSession();
+      const token = data?.session?.access_token;
+
+      if (!token) {
+        console.log('No session token. Please login again.');
+        return;
+      }
+
+      const result = await deleteTransaction(id, token);
+      if (result.success) {
+        setRecords((prev) => prev.filter((r) => r.id !== id));
+        console.log(`Record with ID ${id} deleted successfully.`);
+      } else {
+        console.error(
+          'Failed to delete transaction:',
+          result.message || result
+        );
+      }
+    } catch (error) {
+      console.error('Error deleting transaction:', error);
+    }
   };
 
   const handleUpdateRecord = (id, updatedData) => {
@@ -84,7 +105,8 @@ const App = () => {
     );
   };
 
-  const withMargin = location.pathname.startsWith('/dashboard') ||
+  const withMargin =
+    location.pathname.startsWith('/dashboard') ||
     location.pathname.startsWith('/addrecord') ||
     location.pathname.startsWith('/updaterecord');
 
@@ -94,10 +116,10 @@ const App = () => {
       <main className={withMargin ? 'mx-[10%]' : ''}>
         {!hideNav && <Navigation />}
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path='/' element={<LandingPage />} />
 
           <Route
-            path="/dashboard"
+            path='/dashboard'
             element={
               <ProtectedRoute>
                 <DashboardPage
@@ -112,7 +134,7 @@ const App = () => {
           />
 
           <Route
-            path="/addrecord"
+            path='/addrecord'
             element={
               <ProtectedRoute>
                 <AddRecordPage onAddRecord={handleAddRecord} />
@@ -121,7 +143,7 @@ const App = () => {
           />
 
           <Route
-            path="/updaterecord/:id"
+            path='/updaterecord/:id'
             element={
               <ProtectedRoute>
                 <UpdateRecordPage
@@ -133,7 +155,7 @@ const App = () => {
           />
 
           <Route
-            path="/record/:id"
+            path='/record/:id'
             element={
               <ProtectedRoute>
                 <DetailPage
@@ -145,9 +167,9 @@ const App = () => {
             }
           />
 
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/register' element={<RegisterPage />} />
+          <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </main>
     </>
