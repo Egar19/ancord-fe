@@ -19,7 +19,7 @@ const UpdateRecordPage = ({ onUpdateRecord, refetchRecords }) => {
   const [alert, setAlert] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
 
-  // ✅ Ambil data transaksi berdasarkan ID
+  // Ambil data transaksi berdasarkan ID
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
