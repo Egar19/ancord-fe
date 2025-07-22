@@ -1,4 +1,5 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 
 import Header from './components/Header';
 import Navigation from './components/Navigation';
@@ -13,21 +14,16 @@ import UpdateRecordPage from './pages/UpdateRecordPage';
 import DetailPage from './pages/DetailPage';
 import NotFoundPage from './pages/NotFoundPage';
 
-import { useSearch } from './hooks/useSearch';
-
 const App = () => {
   const location = useLocation();
+  const [searchQuery, setSearchQuery] = useState('');
 
-  // Control visibility
   const showNavPaths = ['/dashboard', '/addrecord', '/updaterecord'];
   const hideNav = !showNavPaths.some((path) => location.pathname.startsWith(path));
   const hideLogout =
     location.pathname === '/login' ||
     location.pathname === '/register' ||
     location.pathname === '/';
-
-  // Search state
-  const { filteredRecords, setSearchQuery } = useSearch();
 
   const withMargin =
     location.pathname.startsWith('/dashboard') ||
@@ -36,21 +32,22 @@ const App = () => {
 
   return (
     <>
-      <Header showLogOut={!hideLogout} onSearch={setSearchQuery} />
+      <Header
+        showLogOut={!hideLogout}
+        onSearch={setSearchQuery}
+      />
       <main className={withMargin ? 'mx-[10%]' : ''}>
         {!hideNav && <Navigation />}
         <Routes>
           <Route path='/' element={<LandingPage />} />
-
           <Route
             path='/dashboard'
             element={
               <ProtectedRoute>
-                <DashboardPage filteredRecords={filteredRecords} />
+                <DashboardPage searchQuery={searchQuery} />
               </ProtectedRoute>
             }
           />
-
           <Route
             path='/addrecord'
             element={
@@ -59,7 +56,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path='/updaterecord/:id'
             element={
@@ -68,7 +64,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path='/record/:id'
             element={
@@ -77,7 +72,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
           <Route path='*' element={<NotFoundPage />} />

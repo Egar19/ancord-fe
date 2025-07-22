@@ -1,10 +1,5 @@
-import React, { useState } from 'react';
-
-function SearchBar({ onSearch, placeholder = 'Search record...' }) {
-  const [query, setQuery] = useState('');
-
+function SearchBar({ query, onSearch, placeholder = 'Search record...' }) {
   const handleChange = (e) => {
-    setQuery(e.target.value);
     if (onSearch) {
       onSearch(e.target.value);
     }

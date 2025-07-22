@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import { supabase } from '../utils/supabase';
@@ -8,7 +8,7 @@ import { FaRegCircleUser } from 'react-icons/fa6';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import ThemeSwitcher from './ThemeSwitcher';
 
-const Header = ({ showLogOut, onSearch }) => {
+const Header = ({ showLogOut, onSearch, searchQuery }) => {
   const navigate = useNavigate();
   const { session, setSession } = useSession();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -60,7 +60,9 @@ const Header = ({ showLogOut, onSearch }) => {
         </button>
       </div>
 
-      {session && showLogOut && <SearchBar onSearch={onSearch} />}
+      {session && showLogOut && (
+        <SearchBar query={searchQuery} onSearch={onSearch} />
+      )}
 
       <ThemeSwitcher />
 

@@ -3,10 +3,19 @@ import HistoryList from '../components/HistoryList';
 import Loading from '../components/Loading';
 import { useTransactions } from '../hooks/useTransactions';
 
-const DashboardPage = () => {
+const DashboardPage = ({ searchQuery }) => {
   const { data: transactions = [], isLoading } = useTransactions();
 
   if (isLoading) return <Loading />;
+
+  const filteredRecords = transactions.filter((record) => {
+    if (!searchQuery) return true;
+    return ['notes', 'type'].some((key) =>
+      String(record[key] || '')
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+    );
+  });
 
   const totalIncome = transactions
     .filter((trx) => trx.type === 'income')
@@ -25,7 +34,7 @@ const DashboardPage = () => {
         totalIncome={totalIncome}
         totalOutcome={totalOutcome}
       />
-      <HistoryList records={transactions} />
+      <HistoryList records={filteredRecords} />
     </div>
   );
 };
