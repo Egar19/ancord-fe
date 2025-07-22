@@ -1,15 +1,20 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import AlertBox from '../components/AlertBox';
 import { FaAngleLeft } from 'react-icons/fa6';
-import { formatRupiah } from '../utils/formatRupiah';
 
-const DetailPage = ({ records, onDelete }) => {
+import Loading from '../components/Loading';
+import AlertBox from '../components/AlertBox';
+import { formatRupiah } from '../utils/formatRupiah';
+import { useTransactionById } from '../hooks/useTransactionById';
+import { deleteTransaction } from '../utils/api';
+import { useAuthToken } from '../hooks/useAuthToken';
+
+const DetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const token = useAuthToken();
 
-  const record = records.find((r) => r.id == id);
-
+  const { data: record, isLoading, isError } = useTransactionById(id);
   const [alert, setAlert] = useState({ type: '', message: '', onConfirm: null });
 
   const showAlert = (type, message, duration = 2000, onConfirm = null) => {
@@ -22,15 +27,24 @@ const DetailPage = ({ records, onDelete }) => {
     }
   };
 
-  if (!record) return <p className="text-center mt-8">Record not found.</p>;
-
-  const handleDelete = () => {
-    showAlert('success', 'Record deleted successfully.');
-    setTimeout(() => {
-      onDelete(id);
-      navigate('/dashboard');
-    }, 1000);
+  const handleDelete = async () => {
+    try {
+      const res = await deleteTransaction(id, token);
+      console.log('Response deleteTransaction:', res);
+      
+      if (res.status !== 'success') {
+        showAlert('error', res.message || 'Failed to delete record.');
+        return;
+      }
+      showAlert('success', 'Record deleted successfully.');
+      setTimeout(() => navigate('/dashboard'), 1000);
+    } catch (err) {
+      showAlert('error', err.message || 'Error deleting record.');
+    }
   };
+
+  if (isLoading) return <Loading />;
+  if (isError || !record) return <p className="text-center mt-8">Record not found.</p>;
 
   return (
     <>

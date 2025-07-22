@@ -1,16 +1,21 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
-export default function useSearch(records, keyList = ['title', 'description']) {
+export function useSearch(records = [], keyList = ['title', 'description']) {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredRecords = records.filter((record) => {
-    if (!searchQuery) return true;
-    return keyList.some((key) =>
-      String(record[key] || '')
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase())
+  const filteredRecords = useMemo(() => {
+    if (!searchQuery) return records;
+
+    const lowerQuery = searchQuery.toLowerCase();
+
+    return records.filter((record) =>
+      keyList.some((key) =>
+        String(record[key] || '')
+          .toLowerCase()
+          .includes(lowerQuery)
+      )
     );
-  });
+  }, [records, searchQuery, keyList]);
 
   return {
     searchQuery,
