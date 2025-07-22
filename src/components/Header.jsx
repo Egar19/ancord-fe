@@ -111,7 +111,7 @@ const Header = ({ showLogOut, onSearch, searchQuery }) => {
             </div>
           </div>
         ) : (
-          !session && (
+           (
             <div className='dropdown dropdown-end' ref={dropdownRef}>
               <button
                 className='btn btn-ghost flex items-center gap-2 cursor-pointer'
@@ -126,6 +126,9 @@ const Header = ({ showLogOut, onSearch, searchQuery }) => {
               </button>
               {dropdownOpen && (
                 <ul className='menu menu-md dropdown-content bg-base-100 rounded-box z-10 mt-3 w-40 p-2 shadow'>
+                  <li className='md:hidden block'>
+                    <ThemeSwitcher />
+                  </li>
                   <li>
                     <button
                       onClick={() => {
