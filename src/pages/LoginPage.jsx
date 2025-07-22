@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginInput from '../components/LoginInput';
 import { loginUser } from '../utils/api';
@@ -12,6 +12,18 @@ const LoginPage = () => {
 
   const [alert, setAlert] = useState({ type: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Cek apakah sudah login
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data?.session?.access_token) {
+        navigate('/dashboard'); // redirect jika sudah login
+      }
+    };
+
+    checkSession();
+  }, [navigate]);
 
   const showAlert = (type, message, duration = 3000) => {
     setAlert({ type, message });
