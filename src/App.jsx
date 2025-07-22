@@ -27,11 +27,13 @@ const App = () => {
     location.pathname === '/register' ||
     location.pathname === '/';
 
-  const withMargin =
-    location.pathname.startsWith('/dashboard') ||
-    location.pathname.startsWith('/record') ||
-    location.pathname.startsWith('/addrecord') ||
-    location.pathname.startsWith('/updaterecord');
+  // const withMargin =
+  //   location.pathname.startsWith('/dashboard') ||
+  //   location.pathname.startsWith('/record') ||
+  //   location.pathname.startsWith('/addrecord') ||
+  //   location.pathname.startsWith('/updaterecord') 
+    
+  //   ;
 
   const showHeaderPaths = [
     '/',
@@ -52,10 +54,9 @@ const App = () => {
       {!hideHeader && (
         <Header showLogOut={!hideLogout} onSearch={setSearchQuery} />
       )}
-      <main className={withMargin ? 'mx-[10%]' : ''}>
+      <main className='mx-[10%]'>
         {!hideNav && <Navigation />}
         <Routes>
-          <Route path='/' element={<LandingPage />} />
           <Route
             path='/dashboard'
             element={
@@ -88,6 +89,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route path='/' element={<LandingPage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
           <Route path='*' element={<NotFoundPage />} />

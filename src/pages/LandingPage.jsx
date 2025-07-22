@@ -3,7 +3,7 @@ import ancordlogo from '../../public/ancord.svg';
 
 const LandingPage = () => {
   return (
-    <div className='hero bg-base-200 min-h-screen'>
+    <div className='hero bg-base-100 min-h-screen'>
       <div className='hero-content flex-col lg:flex-row'>
         <img src={ancordlogo} className='max-w-sm rounded-lg shadow-2xl' />
         <div>
