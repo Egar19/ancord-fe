@@ -6,16 +6,17 @@ import AlertBox from '../components/AlertBox';
 import { useNavigate } from 'react-router-dom';
 import { addTransaction } from '../utils/api';
 
-// eslint-disable-next-line no-unused-vars
-const AddRecordPage = ({ onAddRecord }) => {
+const AddRecordPage = ({ refetchRecords }) => {
   const [category, setCategory] = useInput('');
   const [amount, setAmount] = useInput('');
   const [notes, setNotes] = useInput('');
   const [date, setDate] = useInput('');
 
   const [alert, setAlert] = useState({ type: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
+
   const showAlert = (type, message, duration = 2000) => {
     setAlert({ type, message });
     setTimeout(() => {
@@ -26,11 +27,10 @@ const AddRecordPage = ({ onAddRecord }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
+    const parsedAmount = Number(amount);
     if (
       !category ||
-      !amount ||
-      Number(amount) <= 0 ||
+      !parsedAmount ||
       notes.trim() === '' ||
       date.trim() === ''
     ) {
@@ -38,33 +38,52 @@ const AddRecordPage = ({ onAddRecord }) => {
       return;
     }
 
+    setIsSubmitting(true);
+
     const newRecord = {
       type: category,
-      amount: Number(amount),
+      amount: parsedAmount,
       notes,
       transaction_date: date,
     };
 
-    const { data } = await supabase.auth.getSession();
-    const token = data?.session?.access_token;
-    
     try {
+      const { data } = await supabase.auth.getSession();
+      const token = data?.session?.access_token;
+
+      if (!token) {
+        showAlert('error', 'Unauthorized. Please login again.');
+        return;
+      }
+
       const result = await addTransaction(newRecord, token);
+
       if (result.success || result.id || result.data) {
+        // Refetch dari backend agar data valid dan lengkap
+        if (refetchRecords) {
+          await refetchRecords();
+        }
+
         showAlert('success', 'Record successfully added!');
-        //Reset form
+
+        // Reset form
         setCategory({ target: { value: '' } });
         setAmount({ target: { value: '' } });
         setNotes({ target: { value: '' } });
         setDate({ target: { value: '' } });
+
+        // Redirect setelah sukses
         setTimeout(() => {
           navigate('/dashboard');
         }, 1000);
       } else {
         showAlert('error', result.message || 'Failed to add record.');
       }
-    } catch {
-      showAlert('error', 'Server error.');
+    // eslint-disable-next-line no-unused-vars
+    } catch (error) {
+      showAlert('error', 'Server error. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -89,7 +108,8 @@ const AddRecordPage = ({ onAddRecord }) => {
         date={date}
         onDateChange={setDate}
         onSubmit={handleSubmit}
-        submitLabel='Add Record'
+        submitLabel={isSubmitting ? 'Submitting...' : 'Add Record'}
+        disabled={isSubmitting}
       />
     </>
   );

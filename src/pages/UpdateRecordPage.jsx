@@ -19,7 +19,7 @@ const UpdateRecordPage = ({ onUpdateRecord, refetchRecords }) => {
   const [alert, setAlert] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
 
-  // Ambil data transaksi berdasarkan ID
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -82,7 +82,6 @@ const UpdateRecordPage = ({ onUpdateRecord, refetchRecords }) => {
       if (result.status === 'success') {
         showAlert('success', result.message || 'Record successfully updated!');
 
-        // Update state lokal di App (jika ada)
         if (onUpdateRecord) {
           onUpdateRecord(id, updatedRecord);
         }

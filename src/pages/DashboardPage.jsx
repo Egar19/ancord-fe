@@ -1,8 +1,6 @@
 import BalanceSUmmary from "../components/BalanceSummary"
 import HistoryList from "../components/HistoryList"
 
-
-
 const DashboardPage = ({ records, totalIncome, totalOutcome, balance, filteredRecords }) => {
   return (
     <div className="my-4">

@@ -15,11 +15,13 @@ import DetailPage from './pages/DetailPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 import { getTransactions, deleteTransaction } from './utils/api';
-import { supabase } from './utils/supabase';
 import useSearch from './hooks/useSearch';
+import { useSession } from './contexts/SessionContext';
 
 const App = () => {
   const location = useLocation();
+  const { session } = useSession();
+
   const showNavPaths = ['/dashboard', '/addrecord', '/updaterecord'];
   const hideNav = !showNavPaths.some((path) =>
     location.pathname.startsWith(path)
@@ -31,54 +33,55 @@ const App = () => {
 
   const [records, setRecords] = useState([]);
 
-  // Ekstrak fetchTransactions agar bisa digunakan ulang
+  // fetchTransactions pakai token dari session context
   const fetchTransactions = useCallback(async () => {
     try {
-      const { data } = await supabase.auth.getSession();
-      const token = data?.session?.access_token;
-
-      if (!token) {
-        console.log('No session token. Please login again.');
-        return;
-      }
+      const token = session?.access_token;
+      if (!token) return;
 
       const result = await getTransactions(token);
       if (result && (result.success || result.data)) {
         const { transactions } = result.data || result;
-        console.log('Fetched transactions:', transactions);
-        setRecords(transactions);
+
+        const sorted = [...transactions].sort(
+          (a, b) => new Date(b.transaction_date) - new Date(a.transaction_date)
+        );
+
+        setRecords(sorted);
       } else {
         console.log('Failed to fetch transactions. Response:', result);
       }
     } catch (error) {
       console.error('Error fetching transactions:', error);
     }
-  }, []);
+  }, [session]);
 
-  // Panggil saat pertama kali load
+  // Trigger fetchTransactions saat session berubah (misalnya setelah login)
   useEffect(() => {
-    fetchTransactions();
-  }, [fetchTransactions]);
+    if (session?.access_token) {
+      fetchTransactions();
+    }
+  }, [session, fetchTransactions]);
 
   const { filteredRecords, setSearchQuery } = useSearch(records);
 
   const totalIncome = records
     .filter((record) => record.type === 'income')
     .reduce((acc, record) => acc + record.amount, 0);
+
   const totalOutcome = records
     .filter((record) => record.type === 'outcome')
     .reduce((acc, record) => acc + record.amount, 0);
+
   const balance = totalIncome - totalOutcome;
 
-  const handleAddRecord = (newRecord) => {
-    setRecords([newRecord, ...records]);
-  };
+  // const handleAddRecord = (newRecord) => {
+  //   setRecords([newRecord, ...records]);
+  // };
 
   const handleDeleteRecord = async (id) => {
     try {
-      const { data } = await supabase.auth.getSession();
-      const token = data?.session?.access_token;
-
+      const token = session?.access_token;
       if (!token) {
         console.log('No session token. Please login again.');
         return;
@@ -137,7 +140,7 @@ const App = () => {
             path='/addrecord'
             element={
               <ProtectedRoute>
-                <AddRecordPage onAddRecord={handleAddRecord} />
+                <AddRecordPage refetchRecords={fetchTransactions} />
               </ProtectedRoute>
             }
           />
