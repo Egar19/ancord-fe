@@ -28,8 +28,8 @@ const ThemeSwitcher = () => {
   ];
 
   return (
-    <div className='dropdown dropdown-center mr-2'>
-      <div tabIndex={0} role='button' className='btn m-1'>
+    <div className='dropdown dropdown-center'>
+      <div tabIndex={0} role='button' className='btn'>
         Theme: {theme}
       </div>
       <ul

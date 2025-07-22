@@ -16,8 +16,7 @@ const LandingPage = () => {
           Aplikasi ini membantu kamu mencatat pemasukan, pengeluaran, dan memantau saldo secara real-time. Mulai perjalanan finansial sehatmu sekarang!
         </p>
         <div className="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-          <Link to="/login" className="btn btn-primary btn-lg">Login</Link>
-          <Link to="/register" className="btn btn-outline btn-lg">Register</Link>
+
         </div>
       </div>
     </div>

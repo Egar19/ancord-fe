@@ -44,100 +44,116 @@ const Header = ({ showLogOut, onSearch, searchQuery }) => {
   const username = session?.user?.user_metadata?.username || 'User';
 
   return (
-    <header className='navbar bg-base-200 shadow-sm flex flex-col gap-2 md:flex-row md:items-center sticky top-0 z-30'>
-      <div className='flex-1 flex items-center'>
-        <button
-          className='btn btn-ghost text-xl'
-          onClick={() => {
-            if (session) {
-              navigate('/dashboard');
-            } else {
-              navigate('/');
-            }
-          }}
-        >
-          AnCord
-        </button>
-      </div>
-
-      {session && showLogOut && (
-        <SearchBar query={searchQuery} onSearch={onSearch} />
-      )}
-
-      <ThemeSwitcher />
-
-      {session && showLogOut ? (
-        <div className='flex gap-2 items-center'>
-          <span className='font-semibold text-lg pr-4'>{username}</span>
-          <div className='dropdown dropdown-end'>
-            <div
-              tabIndex={0}
-              role='button'
-              className='btn btn-ghost btn-circle avatar'
-            >
-              <div className='w-10 rounded-full'>
-                <FaRegCircleUser className='size-full' />
-              </div>
-            </div>
-            <ul
-              tabIndex={0}
-              className='menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow border border-neutral/40 dark:border-neutral-600'
-            >
-              <li>
-                <button
-                  onClick={handleLogout}
-                  className='text-red-600 text-lg flex items-center gap-2'
-                >
-                  <IoIosLogOut />
-                  Logout
-                </button>
-              </li>
-            </ul>
-          </div>
+    <header className='px-[5%] bg-base-200 shadow'>
+      <div className='navbar gap-2'>
+        <div className='flex-1 flex items-center'>
+          <button
+            className='cursor-pointer font-bold text-xl'
+            onClick={() => {
+              if (session) {
+                navigate('/dashboard');
+              } else {
+                navigate('/');
+              }
+            }}
+          >
+            AnCord
+          </button>
         </div>
-      ) : (
-        !session && (
-          <div className='dropdown dropdown-end' ref={dropdownRef}>
-            <button
-              className='btn btn-ghost flex items-center gap-2 cursor-pointer'
-              onClick={() => setDropdownOpen((v) => !v)}
-              aria-label='Open login/register menu'
-            >
-              {dropdownOpen ? (
-                <FaChevronUp className='text-xl' />
-              ) : (
-                <FaChevronDown className='text-xl' />
-              )}
-            </button>
-            {dropdownOpen && (
-              <ul className='menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-40 p-2 shadow border border-neutral/40 dark:border-neutral-600'>
+
+        {session && showLogOut && (
+          <div className='flex'>
+            <SearchBar query={searchQuery} onSearch={onSearch} />
+          </div>
+        )}
+
+        <div className='md:block hidden'>
+          <ThemeSwitcher />
+        </div>
+
+        {session && showLogOut ? (
+          <div className='flex gap-2 items-center'>
+            <span className='font-semibold text-lg md:block hidden'>
+              {username}
+            </span>
+            <div className='dropdown dropdown-end'>
+              <div
+                tabIndex={0}
+                role='button'
+                className='btn btn-ghost btn-circle avatar'
+              >
+                <div className='w-10 rounded-full'>
+                  <FaRegCircleUser className='size-full' />
+                </div>
+              </div>
+              <ul
+                tabIndex={0}
+                className='menu menu-md dropdown-content bg-base-200 rounded-box z-10 mt-3 w-52 p-2 shadow'
+              >
                 <li>
-                  <button
-                    onClick={() => {
-                      setDropdownOpen(false);
-                      navigate('/login');
-                    }}
-                    className='text-base'
-                  >
-                    Login
-                  </button>
+                  <span className='font-semibold md:hidden block'>
+                    {username}
+                  </span>
+                </li>
+                <li className='md:hidden block'>
+                  <ThemeSwitcher />
                 </li>
                 <li>
                   <button
-                    onClick={() => {
-                      setDropdownOpen(false);
-                      navigate('/register');
-                    }}
-                    className='text-base'
+                    onClick={handleLogout}
+                    className='text-red-600 flex items-center'
                   >
-                    Register
+                    <IoIosLogOut />
+                    Logout
                   </button>
                 </li>
               </ul>
-            )}
+            </div>
           </div>
-        )
-      )}
+        ) : (
+          !session && (
+            <div className='dropdown dropdown-end' ref={dropdownRef}>
+              <button
+                className='btn btn-ghost flex items-center gap-2 cursor-pointer'
+                onClick={() => setDropdownOpen((v) => !v)}
+                aria-label='Open login/register menu'
+              >
+                {dropdownOpen ? (
+                  <FaChevronUp className='text-xl' />
+                ) : (
+                  <FaChevronDown className='text-xl' />
+                )}
+              </button>
+              {dropdownOpen && (
+                <ul className='menu menu-md dropdown-content bg-base-100 rounded-box z-10 mt-3 w-40 p-2 shadow'>
+                  <li>
+                    <button
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        navigate('/login');
+                      }}
+                      className='text-base'
+                    >
+                      Login
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        navigate('/register');
+                      }}
+                      className='text-base'
+                    >
+                      Register
+                    </button>
+                  </li>
+                </ul>
+              )}
+            </div>
+          )
+        )}
+      </div>
     </header>
   );
 };

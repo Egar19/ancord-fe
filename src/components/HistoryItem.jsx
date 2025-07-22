@@ -4,19 +4,30 @@ import { formatRupiah } from '../utils/formatRupiah';
 
 const HistoryItem = ({ id, type, amount, notes, transaction_date: date }) => {
   return (
-    <div className='p-4 bg-base-300 rounded'>
-      <h3 className='text-xl'>{type}</h3>
-      <h4>Amount: {formatRupiah(amount)}</h4>
-      <h4>Notes: {notes}</h4>
-      <h4>Date: {date}</h4>
-      <div className='flex justify-end'>
-        <Link
-          to={`/record/${id}`}
-          className='inline-flex items-center gap-1 border rounded px-2 py-1 text-base-content text-sm transition btn btn-soft'
-        >
-          <span className='leading-none'>Detail</span>
-          <FaAngleRight className='text-xs' />
-        </Link>
+    <div className='card card-md bg-base-300 shadow-md '>
+      <div className='card-body'>
+        <h2 className='capitalize text-xl card-title font-bold'>{type}</h2>
+        <p>
+          <strong>Amount: </strong>
+          {formatRupiah(amount)}
+        </p>
+        <p>
+          <strong>Notes: </strong>
+          {notes}
+        </p>
+        <p>
+          <strong>Date: </strong>
+          {date}
+        </p>
+        <div className='flex justify-end card-actions'>
+          <Link
+            to={`/record/${id}`}
+            className='inline-flex items-center gap-1 border rounded px-2 py-1 text-base-content text-sm transition btn btn-soft'
+          >
+            <span className='leading-none'>Detail</span>
+            <FaAngleRight className='text-xs' />
+          </Link>
+        </div>
       </div>
     </div>
   );

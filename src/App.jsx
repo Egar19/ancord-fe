@@ -19,7 +19,9 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const showNavPaths = ['/dashboard', '/addrecord', '/updaterecord'];
-  const hideNav = !showNavPaths.some((path) => location.pathname.startsWith(path));
+  const hideNav = !showNavPaths.some((path) =>
+    location.pathname.startsWith(path)
+  );
   const hideLogout =
     location.pathname === '/login' ||
     location.pathname === '/register' ||
@@ -27,15 +29,29 @@ const App = () => {
 
   const withMargin =
     location.pathname.startsWith('/dashboard') ||
+    location.pathname.startsWith('/record') ||
     location.pathname.startsWith('/addrecord') ||
     location.pathname.startsWith('/updaterecord');
 
+  const showHeaderPaths = [
+    '/',
+    '/dashboard',
+    '/addrecord',
+    '/updaterecord',
+    '/record',
+  ];
+
+  const hideHeader = !showHeaderPaths.some((path) =>
+    path === '/'
+      ? location.pathname === '/'
+      : location.pathname.startsWith(path)
+  );
+
   return (
     <>
-      <Header
-        showLogOut={!hideLogout}
-        onSearch={setSearchQuery}
-      />
+      {!hideHeader && (
+        <Header showLogOut={!hideLogout} onSearch={setSearchQuery} />
+      )}
       <main className={withMargin ? 'mx-[10%]' : ''}>
         {!hideNav && <Navigation />}
         <Routes>

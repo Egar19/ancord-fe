@@ -13,7 +13,7 @@ const LoginInput = ({ login, isSubmitting }) => {
   };
 
   return (
-    <div className="mt-30 h-full flex items-center justify-center bg-transparent overflow-y-auto">
+    <div className="h-screen flex items-center justify-center bg-transparent">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-sm md:max-w-md bg-base-300 rounded-2xl shadow-xl p-6 md:p-8 flex flex-col gap-4 border border-base-200"
