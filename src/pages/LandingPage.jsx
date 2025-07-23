@@ -5,7 +5,11 @@ const LandingPage = () => {
   return (
     <div className='hero bg-base-100 min-h-screen'>
       <div className='hero-content flex-col lg:flex-row'>
-        <img src={ancordlogo} className='w-full max-w-xs sm:max-w-sm md:max-w-md rounded-lg shadow-2xl' />
+        <img
+          src={ancordlogo}
+          className='w-full max-w-xs sm:max-w-sm md:max-w-md rounded-lg fill-secondary-300 drop-shadow-lg drop-shadow-secondary-100'
+        />
+
         <div>
           <h1 className='text-5xl font-bold'>
             Record & Manage Your Finances with Ease
