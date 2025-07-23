@@ -60,6 +60,13 @@ const DetailPage = () => {
           onConfirm={alert.onConfirm}
         />
       )}
+      <button
+        className='mb-4 flex items-center gap-2 btn btn-ghost bg-base-100'
+        onClick={() => navigate(-1)}
+      >
+        <FaAngleLeft />
+        Back
+      </button>
 
       <table className='table-auto w-full rounded-lg overflow-hidden'>
         <thead>
