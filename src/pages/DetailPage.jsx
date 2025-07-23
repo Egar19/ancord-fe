@@ -15,7 +15,11 @@ const DetailPage = () => {
   const token = useAuthToken();
 
   const { data: record, isLoading, isError } = useTransactionById(id);
-  const [alert, setAlert] = useState({ type: '', message: '', onConfirm: null });
+  const [alert, setAlert] = useState({
+    type: '',
+    message: '',
+    onConfirm: null,
+  });
 
   const showAlert = (type, message, duration = 2000, onConfirm = null) => {
     setAlert({ type, message, onConfirm });
@@ -30,7 +34,7 @@ const DetailPage = () => {
   const handleDelete = async () => {
     try {
       const res = await deleteTransaction(id, token);
-      
+
       if (res.status !== 'success') {
         showAlert('error', res.message || 'Failed to delete record.');
         return;
@@ -43,10 +47,11 @@ const DetailPage = () => {
   };
 
   if (isLoading) return <Loading />;
-  if (isError || !record) return <p className="text-center mt-8">Record not found.</p>;
+  if (isError || !record)
+    return <p className='text-center mt-8'>Record not found.</p>;
 
   return (
-    <>
+    <div className='mt-4 bg-base-200 rounded-md shadow-lg p-4'>
       {alert.message && (
         <AlertBox
           type={alert.type}
@@ -56,55 +61,80 @@ const DetailPage = () => {
         />
       )}
 
-      <div className="space-y-4 bg-base-200 rounded p-4 my-4">
-        <button
-          className="inline-flex items-center gap-1 border rounded px-2 py-1 text-base-content text-sm transition btn btn-soft"
-          onClick={() => navigate(-1)}
-        >
-          <FaAngleLeft className="text-xs" />
-          <span className="leading-none">Back</span>
-        </button>
-
-        <h2 className="text-2xl font-semibold mb-4">Record Details</h2>
-        <p>
-          <strong>Category:</strong> {record.type}
-        </p>
-        <p>
-          <strong>Amount:</strong> {formatRupiah(record.amount)}
-        </p>
-        <p>
-          <strong>Notes:</strong> {record.notes}
-        </p>
-        <p>
-          <strong>Date:</strong> {record.transaction_date.split('T')[0]}
-        </p>
-
-        <div className="mt-4 flex gap-2">
-          <button
-            className="btn btn-warning"
-            onClick={() => navigate(`/updaterecord/${id}`)}
-          >
-            Edit
-          </button>
-          <button
-            className="btn btn-error"
-            onClick={() =>
-              showAlert(
-                'warning',
-                'Are you sure you want to delete this record?',
-                0,
-                () => {
-                  setAlert({ type: '', message: '', onConfirm: null });
-                  handleDelete();
-                }
-              )
-            }
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </>
+      <table className='table-auto w-full rounded-lg overflow-hidden'>
+        <thead>
+          <tr>
+            <th
+              colSpan={2}
+              className='text-left text-xl font-semibold text-base-content pb-2'
+            >
+              Record Detail
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th className='text-left align-top'>
+              <div className='flex justify-between gap-3 py-2'>
+                <span className='font-semibold'>Category</span>
+                <span>:</span>
+              </div>
+            </th>
+            <td className='align-top py-2 pl-2'>{record.type}</td>
+          </tr>
+          <tr>
+            <th className='text-left align-top'>
+              <div className='flex justify-between gap-3 py-2'>
+                <span className='font-semibold'>Amount</span>
+                <span>:</span>
+              </div>
+            </th>
+            <td className='align-top py-2 pl-2'>
+              {formatRupiah(record.amount)}
+            </td>
+          </tr>
+          <tr>
+            <th className='text-left align-top'>
+              <div className='flex justify-between gap-3 py-2'>
+                <span className='font-semibold'>Notes</span>
+                <span>:</span>
+              </div>
+            </th>
+            <td className='align-top text-justify py-2 pl-2'>{record.notes}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={2} className='px-4 py-3'>
+              <div className='mt-2 flex justify-end gap-2'>
+                <button
+                  className='btn btn-warning'
+                  onClick={() => navigate(`/updaterecord/${id}`)}
+                >
+                  Edit
+                </button>
+                <button
+                  className='btn btn-error'
+                  onClick={() =>
+                    showAlert(
+                      'warning',
+                      'Are you sure you want to delete this record?',
+                      0,
+                      () => {
+                        setAlert({ type: '', message: '', onConfirm: null });
+                        handleDelete();
+                      }
+                    )
+                  }
+                >
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   );
 };
 
