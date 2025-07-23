@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import ancordlogo from '../assets/ancordlogo.png';
+import ancordlogo from '../assets/ancord.svg';
 
 const LandingPage = () => {
   return (
