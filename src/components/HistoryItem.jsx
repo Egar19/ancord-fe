@@ -19,7 +19,7 @@ const HistoryItem = ({ id, type, amount, notes, transaction_date: date }) => {
         </div>
         <p className='hidden'>{date.split('T')[0]}</p>
       </div>
-      <div className='flex justify-end card-actions'>
+      <div className='my-auto'>
         <Link
           to={`/record/${id}`}
           className='inline-flex items-center gap-1 border rounded px-2 py-1 text-base-content text-sm transition btn btn-soft'
