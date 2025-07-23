@@ -30,7 +30,6 @@ const DetailPage = () => {
   const handleDelete = async () => {
     try {
       const res = await deleteTransaction(id, token);
-      console.log('Response deleteTransaction:', res);
       
       if (res.status !== 'success') {
         showAlert('error', res.message || 'Failed to delete record.');
@@ -77,12 +76,12 @@ const DetailPage = () => {
           <strong>Notes:</strong> {record.notes}
         </p>
         <p>
-          <strong>Date:</strong> {record.transaction_date}
+          <strong>Date:</strong> {record.transaction_date.split('T')[0]}
         </p>
 
         <div className="mt-4 flex gap-2">
           <button
-            className="btn btn-secondary"
+            className="btn btn-warning"
             onClick={() => navigate(`/updaterecord/${id}`)}
           >
             Edit

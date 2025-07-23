@@ -1,12 +1,16 @@
 import BalanceSummary from '../components/BalanceSummary';
+import DashboardSkeleton from '../components/DashboardSkeleton';
 import HistoryList from '../components/HistoryList';
-import Loading from '../components/Loading';
 import { useTransactions } from '../hooks/useTransactions';
 
 const DashboardPage = ({ searchQuery }) => {
   const { data: transactions = [], isLoading } = useTransactions();
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return (
+    <div className='my-4'>
+      <DashboardSkeleton />
+    </div>
+  );
 
   const filteredRecords = transactions.filter((record) => {
     if (!searchQuery) return true;

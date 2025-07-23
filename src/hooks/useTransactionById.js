@@ -9,7 +9,6 @@ export function useTransactionById(id) {
     queryKey: ['transaction', id],
     queryFn: async () => {
       const res = await getTransactionById(id, token);
-      console.log('Response getTransactionById:', res);
 
       if (!res.status || res.status !== 'success') {
         throw new Error(res.message || 'Failed to fetch transaction');

@@ -36,7 +36,7 @@ const HistoryList = ({ records }) => {
       </div>
 
       {/* Daftar histori */}
-      <div className='py-5 grid grid-cols-1 md:grid-cols-2 gap-4'>
+      <div className='py-5 grid grid-cols-1 md:grid-cols-2 gap-4 list'>
         {filteredRecords.length > 0 ? (
           filteredRecords.map((record) => <HistoryBody key={record.id} {...record} />)
         ) : (

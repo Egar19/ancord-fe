@@ -28,7 +28,7 @@ const UpdateRecordPage = () => {
   } = useUpdateTransaction({
     onSuccess: () => {
       showAlert('success', 'Record successfully updated!');
-      setTimeout(() => navigate('/dashboard'), 1000);
+      setTimeout(() => navigate('/dashboard'), 2000);
     },
     onError: (error) => {
       showAlert('error', error?.message || 'Failed to update record');
