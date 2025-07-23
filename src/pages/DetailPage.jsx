@@ -81,33 +81,36 @@ const DetailPage = () => {
         </thead>
         <tbody>
           <tr>
-            <th className='text-left align-top'>
-              <div className='flex justify-between gap-3 py-2'>
-                <span className='font-semibold'>Category</span>
-                <span>:</span>
-              </div>
+            <th className='text-left w-1/12 pr-2 py-2 align-top text-base font-medium'>
+              Category 
             </th>
-            <td className='align-top py-2 pl-2'>{record.type}</td>
-          </tr>
-          <tr>
-            <th className='text-left align-top'>
-              <div className='flex justify-between gap-3 py-2'>
-                <span className='font-semibold'>Amount</span>
-                <span>:</span>
-              </div>
-            </th>
-            <td className='align-top py-2 pl-2'>
-              {formatRupiah(record.amount)}
+            <td className='w-11/12 py-2 align-top text-base'>
+              : {record.type}
             </td>
           </tr>
           <tr>
-            <th className='text-left align-top'>
-              <div className='flex justify-between gap-3 py-2'>
-                <span className='font-semibold'>Notes</span>
-                <span>:</span>
-              </div>
+            <th className='text-left w-1/12 pr-2 py-2 align-top text-base font-medium'>
+              Amount 
             </th>
-            <td className='align-top text-justify py-2 pl-2'>{record.notes}</td>
+            <td className='w-11/12 py-2 align-top text-base'>
+              : {formatRupiah(record.amount)}
+            </td>
+          </tr>
+          <tr>
+            <th className='text-left w-1/12 pr-2 py-2 align-top text-base font-medium'>
+              Notes 
+            </th>
+            <td className='w-11/12 py-2 align-top text-base'>
+              : {record.notes}
+            </td>
+          </tr>
+          <tr>
+            <th className='text-left w-1/12 pr-2 py-2 align-top text-base font-medium'>
+              Date 
+            </th>
+            <td className='w-11/12 py-2 align-top text-base'>
+              : {record.transaction_date.split('T')[0]}
+            </td>
           </tr>
         </tbody>
         <tfoot>
