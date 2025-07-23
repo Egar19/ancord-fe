@@ -13,9 +13,9 @@ const HistoryItem = ({ id, type, amount, notes, transaction_date: date }) => {
         )}
       </div>
       <div>
-        <div>{formatRupiah(amount)}</div>
-        <div className='text-xs uppercase font-semibold opacity-60'>
-          {notes.length > 50 ? notes.slice(0, 50) + '...' : notes}
+        <h3 className='font-semibold'>{formatRupiah(amount)}</h3>
+        <div className='text-xs opacity-60 line-clamp-1 sm:line-clamp-2'>
+          { notes }
         </div>
         <p className='hidden'>{date.split('T')[0]}</p>
       </div>
