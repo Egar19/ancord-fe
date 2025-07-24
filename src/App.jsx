@@ -52,7 +52,7 @@ const App = () => {
       {!hideHeader && (
         <Header showLogOut={!hideLogout} onSearch={setSearchQuery} />
       )}
-      <main className={withMargin ? 'mx-[10%]' : ''}>
+      <main className={withMargin ? 'mx-[10%] sm:mx-[5%]' : ''}>
         {!hideNav && <Navigation />}
         <Routes>
           <Route
