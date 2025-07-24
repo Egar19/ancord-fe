@@ -34,7 +34,6 @@ const HistoryList = ({ records }) => {
           Outcome
         </button>
       </div>
-
       {/* Daftar histori */}
       <div className='py-5 grid grid-cols-1 md:grid-cols-2 gap-4 list'>
         {filteredRecords.length > 0 ? (
