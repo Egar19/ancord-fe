@@ -1,4 +1,4 @@
-# Ancord - Aplikasi Catatan Keuangan
+# AnCord - Aplikasi Catatan Keuangan
 
 Aplikasi web untuk mencatat dan mengelola keuangan pribadi dengan antarmuka yang modern dan mudah digunakan. Dibangun dengan React dan menggunakan Supabase sebagai backend.
 
