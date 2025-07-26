@@ -28,7 +28,7 @@ Frontend TIDAK berkomunikasi langsung ke Supabase, melainkan ke backend (`ancord
 ### 1. Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Egar19/ancord-fe.git
 cd ancord-fe
 ```
 
@@ -53,7 +53,7 @@ VITE_API_URL=http://localhost:5000
 
 ### 4. Jalankan Backend
 
-Ikuti instruksi di folder `ancord-be` untuk menjalankan backend pada port 5000.
+Ikuti instruksi di folder [ancord-be](https://github.com/nudledry/ancord-be.git) untuk menjalankan backend pada port 5000.
 
 ### 5. Jalankan Frontend
 
