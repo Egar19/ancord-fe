@@ -1,43 +1,35 @@
 # AnCord - Aplikasi Catatan Keuangan
 
-Aplikasi web untuk mencatat dan mengelola keuangan pribadi dengan antarmuka yang modern dan mudah digunakan. Dibangun dengan React dan menggunakan Supabase sebagai backend.
+Aplikasi web untuk mencatat dan mengelola keuangan pribadi dengan antarmuka modern. **Frontend (ini)** dibangun dengan React, dan **terhubung ke backend Node.js/Hapi (lihat folder `ancord-be`) yang berperan sebagai API utama**. Backend tersebut mengelola autentikasi, transaksi, dan komunikasi ke database Supabase.
 
-## 🚀 Fitur Utama
+## 🏗️ Arsitektur
 
-- **Dashboard Keuangan**: Melihat ringkasan saldo, total pemasukan, dan pengeluaran
-- **Pencatatan Transaksi**: Menambah catatan pemasukan dan pengeluaran
-- **Pencarian**: Mencari transaksi berdasarkan catatan atau jenis transaksi
-- **Manajemen Data**: Mengedit dan menghapus transaksi yang sudah ada
-- **Autentikasi**: Sistem login dan register yang aman
-- **Responsive Design**: Tampilan yang optimal di desktop dan mobile
-- **Dark/Light Mode**: Toggle tema sesuai preferensi pengguna
+- **Frontend**: React (Vite, Tailwind, DaisyUI, React Query, dsb)
+- **Backend**: Node.js, Hapi.js, Supabase (lihat folder `ancord-be`)
+- **Database & Auth**: Supabase (diakses via backend)
 
-## 🛠️ Tech Stack
+Frontend TIDAK berkomunikasi langsung ke Supabase, melainkan ke backend (`ancord-be`) melalui endpoint REST API (`http://localhost:5000`).
 
-- **Frontend**: React 19, Vite
-- **Styling**: Tailwind CSS, DaisyUI
-- **State Management**: React Query (TanStack Query)
-- **Routing**: React Router DOM
-- **Backend**: Supabase (Database & Authentication)
-- **Form Handling**: React Hook Form
-- **Date Picker**: React Datepicker
-- **Icons**: React Icons
+## 🚦 Integrasi Frontend-Backend
 
-## 📋 Prerequisites
+- Semua request transaksi, login, register, dsb, dilakukan ke backend (`ancord-be`).
+- Backend akan mengelola autentikasi JWT, validasi, dan komunikasi ke Supabase.
+- Pastikan backend sudah berjalan sebelum menjalankan frontend.
 
-Sebelum menjalankan aplikasi, pastikan Anda memiliki:
+## ⚙️ Prerequisites
 
 - Node.js (versi 16 atau lebih baru)
 - npm atau yarn
-- Akun Supabase (untuk database dan autentikasi)
+- Akun Supabase (untuk backend)
+- Jalankan backend (`ancord-be`) terlebih dahulu!
 
-## 🔧 Setup & Installation
+## 🚀 Setup & Installation
 
 ### 1. Clone Repository
 
 ```bash
 git clone <repository-url>
-cd aplikasi-catatan-keuangan
+cd ancord-fe
 ```
 
 ### 2. Install Dependencies
@@ -48,86 +40,34 @@ npm install
 
 ### 3. Environment Variables
 
-Buat file `.env` di root directory dan tambahkan konfigurasi Supabase:
+Buat file `.env` di root directory frontend dan tambahkan:
 
 ```env
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_API_URL=http://localhost:5000
 ```
 
-### 4. Setup Database
+> **Catatan:**
+>
+> - Variabel `VITE_API_URL` digunakan untuk mengarahkan seluruh request ke backend.
+> - Variabel Supabase TIDAK diperlukan di frontend, karena semua komunikasi ke Supabase dilakukan oleh backend.
 
-1. Buat project baru di [Supabase](https://supabase.com)
-2. Buat tabel `transactions` dengan struktur berikut:
+### 4. Jalankan Backend
 
-```sql
-CREATE TABLE transactions (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  type TEXT NOT NULL CHECK (type IN ('income', 'outcome')),
-  amount DECIMAL(10,2) NOT NULL,
-  notes TEXT,
-  transaction_date DATE NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+Ikuti instruksi di folder `ancord-be` untuk menjalankan backend pada port 5000.
 
--- Enable Row Level Security
-ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
-
--- Create policy for users to access only their own transactions
-CREATE POLICY "Users can view own transactions" ON transactions
-  FOR SELECT USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can insert own transactions" ON transactions
-  FOR INSERT WITH CHECK (auth.uid() = user_id);
-
-CREATE POLICY "Users can update own transactions" ON transactions
-  FOR UPDATE USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can delete own transactions" ON transactions
-  FOR DELETE USING (auth.uid() = user_id);
-```
-
-### 5. Run Development Server
+### 5. Jalankan Frontend
 
 ```bash
 npm run dev
 ```
 
-Aplikasi akan berjalan di `http://localhost:5173`
+Aplikasi akan berjalan di `http://localhost:5173` dan terhubung ke backend di `http://localhost:5000`.
 
 ## 📱 Cara Penggunaan
 
-### 1. Registrasi/Login
-
-- Buka aplikasi di browser
-- Klik "Register" untuk membuat akun baru atau "Login" jika sudah punya akun
-- Masukkan email dan password
-
-### 2. Dashboard
-
-- Setelah login, Anda akan diarahkan ke dashboard
-- Dashboard menampilkan ringkasan saldo, total pemasukan, dan pengeluaran
-- Daftar transaksi terbaru ditampilkan di bawah
-
-### 3. Menambah Transaksi
-
-- Klik tombol "+" di navigation bar
-- Pilih jenis transaksi (Pemasukan/Pengeluaran)
-- Masukkan jumlah, catatan, dan tanggal
-- Klik "Add Record" untuk menyimpan
-
-### 4. Mengelola Transaksi
-
-- Klik pada transaksi untuk melihat detail
-- Gunakan tombol edit untuk mengubah transaksi
-- Gunakan tombol delete untuk menghapus transaksi
-
-### 5. Pencarian
-
-- Gunakan search bar di header untuk mencari transaksi
-- Pencarian berdasarkan catatan atau jenis transaksi
+1. Register/login melalui frontend (request dikirim ke backend)
+2. Semua data transaksi, ringkasan, dsb, diambil dari backend
+3. Pastikan backend tetap berjalan selama menggunakan frontend
 
 ## 🏗️ Project Structure
 
@@ -151,7 +91,17 @@ src/
 
 ## 🌐 Deployment
 
-Aplikasi ini sudah dikonfigurasi untuk deployment di Vercel. File `vercel.json` sudah disediakan untuk konfigurasi deployment.
+Aplikasi ini dapat dideploy bersama backend (lihat instruksi deployment backend). File `vercel.json` hanya untuk frontend saja.
+
+## 🧩 Koneksi dengan Backend
+
+- Semua request API: `${VITE_API_URL}/...`
+- Contoh: `POST ${VITE_API_URL}/users/login`, `GET ${VITE_API_URL}/transactions`
+
+## 📝 Catatan
+
+- Untuk pengembangan, jalankan backend dan frontend secara paralel.
+- Untuk production, pastikan environment variable mengarah ke backend yang sudah dideploy.
 
 ## 🤝 Contributing
 
